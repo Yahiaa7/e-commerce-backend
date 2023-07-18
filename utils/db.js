@@ -1,4 +1,4 @@
-const { sequelize } = require('../models/index.model');
+const { sequelize } = require('../models');
 
 exports.dbConnection = async () => {
     await sequelize.authenticate().then(async () => {
