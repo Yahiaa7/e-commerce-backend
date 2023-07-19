@@ -4,20 +4,20 @@ const express = require('express');
 const app = express();
 
 app.use(
-    '/images',
-    express.static('public/images/users'),
-    express.static('public/images/products'),
-    express.json(),
-    express.urlencoded({ extended: true }),
+  '/images',
+  express.static('public/images/users'),
+  express.static('public/images/products'),
+  express.json(),
+  express.urlencoded({ extended: true }),
 );
 
 // DB Connection
 dbConnection();
 
 // linking routes
-app.use('/api', require('./routes/index.routes'));F
+app.use('/api', require('./routes/index.routes')); F
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server started at port ${PORT}!`);
+  console.log(`Server started at port ${PORT}!`);
 });
