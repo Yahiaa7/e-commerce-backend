@@ -47,10 +47,17 @@ module.exports = (sequelize, DataTypes) => {
     role: {
       type: DataTypes.ENUM('Admin', 'Store Manager', 'Advertising Manager', 'User'),
       allowNull: false
+    },
+    status: {
+      type: DataTypes.ENUM('Active', 'Pending', 'Inactive'),
+      defaultValue: 'Pending'
     }
   }, {
     sequelize,
     modelName: 'User',
+    hooks: {
+      
+    }
   });
   return User;
 };
