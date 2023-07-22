@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
     hooks: {
-      
+      beforeCreate: (user, options) => user.status = 'Pending'
     }
   });
   return User;
