@@ -15,7 +15,7 @@ app.use(
 dbConnection();
 
 // linking routes
-app.use('/api', require('./routes/index.routes')); F
+app.use('/api', require('./routes/index.routes'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

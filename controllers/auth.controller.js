@@ -38,6 +38,9 @@ exports.signIn = async (req, res) => {
             message: "Forbidden, your account has been disabled by the admin! >_<",
         });
         const token = jwt.sign(user.id, process.env.PEK, { algorithm: 'RS256', expiresIn: '1 day' });
+        res.cookies('access_token', token, {
+            expires: new Date(Date.now + 24 * 60 * 60 * 1000)
+        });
         return res.status(201).json({ message: 'SignIn Success :)', user, token });
     } catch (err) {
         // try to check if err is instanceOf SequelizeValidation error ..
