@@ -45,7 +45,7 @@ module.exports = {
         type: Sequelize.ENUM('Admin', 'Store Manager', 'Advertising Manager', 'User'),
         allowNull: false
       }, status: {
-        type: DataTypes.ENUM('Active', 'Pending', 'Inactive'),
+        type: Sequelize.ENUM('Active', 'Pending', 'Inactive'),
         defaultValue: 'Pending'
       },
       createdAt: {
