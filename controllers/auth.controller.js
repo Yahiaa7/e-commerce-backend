@@ -2,6 +2,8 @@ const { compare, hash, genSalt } = require('bcrypt');
 const { User, Sequelize, sequelize } = require('../models');
 const { sign, verify, JsonWebTokenError } = require('jsonwebtoken');
 // db.User
+const { redisClient } = require('../utils/redis');
+
 exports.signUp = async (req, res) => {
     try {
         const salt = await genSalt(10, 'b');
