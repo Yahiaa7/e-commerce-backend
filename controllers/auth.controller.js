@@ -66,14 +66,21 @@ exports.signIn = async (req, res) => {
 
 exports.refreshToken = (req, res) => {
     try {
-        let { token } = req.body;
+        let token = req.headers['authorization'].split(' ')[1];
         if (!token) return res.status(400).json({ message: 'Bad Request, insufficient params >_<' });
-        let { id } = verify(token, process.env.PDK);
+        let { id, exp } = verify(token, process.env.PDK);
+        if (Date.now() / 1000 >= exp) res.status(401).json({
+            message: 'Unauthorized, token expired please reauthenticate! >_<'
+        });
         if (!id) return res.status(400).json({ message: 'Bad Request, insufficient params >_<' });
         let newToken = sign({ id }, process.env.PEK, { algorithm: 'RS256', expiresIn: '2 days' });
         return res.status(201).json({ message: 'ok :)', newToken });
     } catch (err) {
         if (err instanceof JsonWebTokenError) return res.status(400).json({ message: 'Bad Token >_<' });
-        else return res.status(500).send('Internal Error, Please try again later!');
+        else return res.status(500).json({ message: 'Internal Error, Please try again later!', err });
     }
+};
+
+exports.logout = () => {
+
 };
