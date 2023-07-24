@@ -51,3 +51,31 @@ exports.authenticateJWT = async (req, res, next) => {
         else return res.status(500).json({ message: 'Internal Error, Please try again later!', err });
     }
 };
+
+exports.isAdmin = async (req, res, next) => {
+    let { id } = req.tokenInfo;
+    let user = await User.findByPk(id);
+    if (user.role == 'Admin') return next();
+    else return res.status(403).send('forbidden >_<');
+};
+
+exports.isStoreAdmin = async (req, res, next) => {
+    let { id } = req.tokenInfo;
+    let user = await User.findByPk(id);
+    if (user.role == 'Store Manager') return next();
+    else return res.status(403).send('forbidden >_<');
+};
+
+exports.isAdvertisingManager = async (req, res, next) => {
+    let { id } = req.tokenInfo;
+    let user = await User.findByPk(id);
+    if (user.role == 'Advertising Manager') return next();
+    else return res.status(403).send('forbidden >_<');
+};
+
+exports.isUser = async (req, res, next) => {
+    let { id } = req.tokenInfo;
+    let user = await User.findByPk(id);
+    if (user.role == 'User') return next();
+    else return res.status(403).send('forbidden >_<');
+};
