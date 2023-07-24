@@ -1,6 +1,6 @@
 const { compare, hash, genSalt } = require('bcrypt');
 const { User, Sequelize, sequelize } = require('../models');
-const { sign, verify, JsonWebTokenError } = require('jsonwebtoken');
+const { sign, verify, JsonWebTokenError, TokenExpiredError } = require('jsonwebtoken');
 // db.User
 const { redisClient } = require('../utils/redis');
 
@@ -67,15 +67,15 @@ exports.signIn = async (req, res) => {
 };
 
 exports.refreshToken = (req, res) => {
+    // implement a separate token for the refresh and another to authenticate 
     try {
-        let token = req.headers['authorization'].split(' ')[1];
+        let { authorization } = req.headers;
+        if (!authorization) res.status(400).json({ message: 'Bad Request, not enough params >_<' });
+        let token = req.headers.authorization.split(' ')[1];
         if (!token) return res.status(400).json({ message: 'Bad Request, insufficient params >_<' });
-        let { id, exp } = verify(token, process.env.PDK);
-        if (Date.now() / 1000 >= exp) res.status(401).json({
-            message: 'Unauthorized, token expired please reauthenticate! >_<'
-        });
+        let { id } = verify(token, process.env.PDK);
         if (!id) return res.status(400).json({ message: 'Bad Request, insufficient params >_<' });
-        let newToken = sign({ id }, process.env.PEK, { algorithm: 'RS256', expiresIn: '2 days' });
+        let newToken = sign({ id: id }, process.env.PEK, { algorithm: 'RS256', expiresIn: 60 });
         return res.status(201).json({ message: 'ok :)', newToken });
     } catch (err) {
         if (err instanceof JsonWebTokenError) return res.status(400).json({ message: 'Bad Token >_<' });
@@ -83,6 +83,17 @@ exports.refreshToken = (req, res) => {
     }
 };
 
-exports.logout = () => {
-
+exports.logout = async (req, res) => {
+    try {
+        const { token, exp } = req.tokenInfo;
+        const tokenRemainingTime = parseInt((exp * 1000 - Date.now()) / 1000, 10);
+        await redisClient.set(token, "blacklisted", 'EX', tokenRemainingTime);
+        return res.status(200).json({ message: 'Logged out successfully :)' });
+    } catch (err) {
+        if (err instanceof JsonWebTokenError) return res.status(400).json({ message: 'Bad Token >_<' });
+        if (err instanceof TokenExpiredError) return res.status(401).json({
+            message: 'Unauthorized, token expired, please reauthenticate! >_<'
+        });
+        else return res.status(500).json({ message: 'Internal Error, Please try again later!', err });
+    }
 };
