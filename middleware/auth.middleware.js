@@ -24,7 +24,6 @@ exports.imageUploadUser = async (req, res, next) => {
             error: err.message
         });
         else if (err) return res.status(500).json({ message: `${err.message}` });
-
         return next();
     });
 };

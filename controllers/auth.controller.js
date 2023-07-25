@@ -9,8 +9,12 @@ exports.signUp = async (req, res) => {
         const salt = await genSalt(10, 'b');
         const hashedPassword = await hash(req.body.password, salt);
         req.body.password = hashedPassword;
+        let imageURL = '';
         // console.log(req.file);
-        if (req.file) req.body.image = req.file.path;
+        if (req.file) {
+            req.body.image = req.file.path;
+            imageURL = `http://localhost:5000/images/${req.file.filename}`;
+        }
         let user = await User.create(req.body);
         const token = sign({ id: user.id }, process.env.PEK, { algorithm: 'RS256', expiresIn: '2 days' });
         // res.cookie('access_token', token, {
@@ -24,6 +28,7 @@ exports.signUp = async (req, res) => {
         return res.status(201).json({
             message: 'SignUp is success, but you have to wait for the admin approval :)',
             user,
+            imageURL,
             token
         });
     } catch (err) {
