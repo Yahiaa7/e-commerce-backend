@@ -16,7 +16,7 @@ exports.signUp = async (req, res) => {
             imageURL = `http://localhost:5000/images/${req.file.filename}`;
         }
         let user = await User.create(req.body);
-        const token = sign({ id: user.id }, process.env.PEK, { algorithm: 'RS256', expiresIn: '2 days' });
+        const token = sign({ id: user.id, role: user.role }, process.env.PEK, { algorithm: 'RS256', expiresIn: '2 days' });
         // res.cookie('access_token', token, {
         //     expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
         //     httpOnly: true,
@@ -56,7 +56,7 @@ exports.signIn = async (req, res) => {
         if (user.status == 'Inactive') return res.status(403).json({
             message: "Forbidden, your account has been disabled by the admin! >_<",
         });
-        const token = sign({ id: user.id }, process.env.PEK, { algorithm: 'RS256', expiresIn: '2 days' });
+        const token = sign({ id: user.id, role: user.role }, process.env.PEK, { algorithm: 'RS256', expiresIn: '2 days' });
         // res.cookie('access_token', token, {
         //     expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
         //     httpOnly: true,

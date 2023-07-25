@@ -34,13 +34,13 @@ exports.authenticateJWT = async (req, res, next) => {
         if (!authorization) return res.status(401).json({ message: 'Unauthorized, not enough params! >_<' });
         const token = authorization.split(' ')[1];
         if (!token) return res.status(401).json({ message: 'Unauthorized, not enough params! >_<' });
-        const { id, exp } = verify(token, process.env.PDK);
+        const { id, exp, role } = verify(token, process.env.PDK);
         const isBlackListed = await redisClient.exists(token);
         if (isBlackListed) return res.status(401).json({
             message: 'Unauthorized, you have logged out please reauthenticate! >_<'
         });
         if (!id) return res.status(400).json({ message: 'Bad Request, insufficient params >_<' });
-        req.tokenInfo = { token, id, exp };
+        req.tokenInfo = { token, id, role, exp };
         return next();
     } catch (err) {
         if (err instanceof JsonWebTokenError) return res.status(400).json({ message: 'Bad Token >_<' });
@@ -52,29 +52,21 @@ exports.authenticateJWT = async (req, res, next) => {
 };
 
 exports.isAdmin = async (req, res, next) => {
-    let { id } = req.tokenInfo;
-    let user = await User.findByPk(id);
-    if (user.role == 'Admin') return next();
+    if (req.tokenInfo.role == 'Admin') return next();
     else return res.status(403).send('forbidden >_<');
 };
 
-exports.isStoreAdmin = async (req, res, next) => {
-    let { id } = req.tokenInfo;
-    let user = await User.findByPk(id);
-    if (user.role == 'Store Manager') return next();
+exports.isStoreManager = async (req, res, next) => {
+    if (req.tokenInfo.role == 'Store Manager') return next();
     else return res.status(403).send('forbidden >_<');
 };
 
 exports.isAdvertisingManager = async (req, res, next) => {
-    let { id } = req.tokenInfo;
-    let user = await User.findByPk(id);
-    if (user.role == 'Advertising Manager') return next();
+    if (req.tokenInfo.role == 'Advertising Manager') return next();
     else return res.status(403).send('forbidden >_<');
 };
 
 exports.isUser = async (req, res, next) => {
-    let { id } = req.tokenInfo;
-    let user = await User.findByPk(id);
-    if (user.role == 'User') return next();
+    if (req.tokenInfo.role == 'User') return next();
     else return res.status(403).send('forbidden >_<');
 };
