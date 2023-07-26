@@ -1,2 +1,4 @@
 node_modules
 .env
+jwt/private-key.pem
+jwt/refresh_private_key.pem
