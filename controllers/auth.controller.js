@@ -16,7 +16,7 @@ exports.signUp = async (req, res) => {
             imageURL = `http://localhost:5000/images/${req.file.filename}`;
         }
         let user = await User.create(req.body);
-        const token = sign({ id: user.id, role: user.role }, process.env.PEK, { algorithm: 'RS256', expiresIn: '2 days' });
+        // const token = sign({ id: user.id, role: user.role }, process.env.PEK, { algorithm: 'RS256', expiresIn: '2 days' });
         // res.cookie('access_token', token, {
         //     expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
         //     httpOnly: true,
@@ -28,8 +28,7 @@ exports.signUp = async (req, res) => {
         return res.status(201).json({
             message: 'SignUp is success, but you have to wait for the admin approval :)',
             user,
-            imageURL,
-            token
+            imageURL
         });
     } catch (err) {
         // try to check if err is instanceOf SequelizeValidation error ..
@@ -56,35 +55,36 @@ exports.signIn = async (req, res) => {
         if (user.status == 'Inactive') return res.status(403).json({
             message: "Forbidden, your account has been disabled by the admin! >_<",
         });
-        const token = sign({ id: user.id, role: user.role }, process.env.PEK, { algorithm: 'RS256', expiresIn: '2 days' });
-        // res.cookie('access_token', token, {
-        //     expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+        const token = sign({ id: user.id, role: user.role }, process.env.PEK, { algorithm: 'RS256', expiresIn: '12h' });
+        const refreshToken = sign({ id: user.id }, process.env.REFRESH_PEK, { algorithm: 'RS256', expiresIn: '7 days' });
+        // res.cookie('refreshToken', refreshToken, {
+        //     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         //     httpOnly: true,
         //     secure: true,
         //     sameSite: 'strict',
         //     signed: true,
         //     overwrite: true
         // });
-        return res.status(201).json({ message: 'SignIn Success :)', user, token });
+        return res.status(201).json({ message: 'SignIn Success :)', user, token, refreshToken });
     } catch (err) {
         return res.status(500).json({ message: 'Internal Error, Please try again later!', err });
     }
 };
 
-exports.refreshToken = (req, res) => {
+exports.refreshToken = async (req, res) => {
     // implement a separate token for the refresh and another to authenticate 
     try {
-        let { authorization } = req.headers;
-        if (!authorization) res.status(400).json({ message: 'Bad Request, not enough params >_<' });
-        let token = req.headers.authorization.split(' ')[1];
-        if (!token) return res.status(400).json({ message: 'Bad Request, insufficient params >_<' });
-        let { id } = verify(token, process.env.PDK);
-        if (!id) return res.status(400).json({ message: 'Bad Request, insufficient params >_<' });
-        let newToken = sign({ id: id }, process.env.PEK, { algorithm: 'RS256', expiresIn: 60 });
-        return res.status(201).json({ message: 'ok :)', newToken });
+        let { refreshToken, id, exp } = req.tokenInfo;
+        let newRefreshToken = sign({ id }, process.env.REFRESH_PEK, { algorithm: 'RS256', expiresIn: '7 days' });
+        let { role } = await User.findByPk(id);
+        console.log(role);
+        const payload = role ? { id, role } : { id };
+        let newToken = sign(payload, process.env.PEK, { algorithm: 'RS256', expiresIn: 10 });
+        const tokenRemainingTime = parseInt((exp * 1000 - Date.now()) / 1000, 10);
+        await redisClient.set(refreshToken, "blacklisted", 'EX', tokenRemainingTime);
+        return res.status(201).json({ message: 'ok :)', newToken, newRefreshToken });
     } catch (err) {
-        if (err instanceof JsonWebTokenError) return res.status(400).json({ message: 'Bad Token >_<' });
-        else return res.status(500).json({ message: 'Internal Error, Please try again later!', err });
+        return res.status(500).json({ message: 'Internal Error, Please try again later!', err });
     }
 };
 
@@ -93,6 +93,14 @@ exports.logout = async (req, res) => {
         const { token, exp } = req.tokenInfo;
         const tokenRemainingTime = parseInt((exp * 1000 - Date.now()) / 1000, 10);
         await redisClient.set(token, "blacklisted", 'EX', tokenRemainingTime);
+        // res.clearCookie('refreshToken', {
+        //     expires: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        //     httpOnly: true,
+        //     secure: true,
+        //     sameSite: 'strict',
+        //     signed: true,
+        //     overwrite: true
+        // });
         return res.status(200).json({ message: 'Logged out successfully :)' });
     } catch (err) {
         if (err instanceof JsonWebTokenError) return res.status(400).json({ message: 'Bad Token >_<' });
