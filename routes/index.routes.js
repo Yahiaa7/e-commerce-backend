@@ -5,5 +5,6 @@ app.get('/test', (req, res) => {
 });
 
 app.use('/auth', require('./auth.routes'));
+app.use('/users', require('./user.routes'));
 
 module.exports = app;

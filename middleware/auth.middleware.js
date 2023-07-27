@@ -96,20 +96,20 @@ exports.authenticateRefreshToken = async (req, res, next) => {
 
 exports.isAdmin = async (req, res, next) => {
     if (req.tokenInfo.role == 'Admin') return next();
-    else return res.status(403).send('forbidden >_<');
+    else return res.status(403).json({ message: 'forbidden >_<' });
 };
 
 exports.isStoreManager = async (req, res, next) => {
     if (req.tokenInfo.role == 'Store Manager') return next();
-    else return res.status(403).send('forbidden >_<');
+    else return res.status(403).json({ message: 'forbidden >_<' });
 };
 
 exports.isAdvertisingManager = async (req, res, next) => {
     if (req.tokenInfo.role == 'Advertising Manager') return next();
-    else return res.status(403).send('forbidden >_<');
+    else return res.status(403).json({ message: 'forbidden >_<' });
 };
 
 exports.isUser = async (req, res, next) => {
     if (req.tokenInfo.role == 'User') return next();
-    else return res.status(403).send('forbidden >_<');
+    else return res.status(403).json({ message: 'forbidden >_<' });
 };
