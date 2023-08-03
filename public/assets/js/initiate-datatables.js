@@ -5,8 +5,8 @@
     $('#dataTables-example').DataTable({
         responsive: true,
         pageLength: 20,
-        lengthChange: false,
+        lengthChange: true,
         searching: true,
-        ordering: true
+        ordering: false
     });
 })();

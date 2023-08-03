@@ -1,0 +1,106 @@
+
+    <link href="/assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+    <link href="/assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
+    <link href="/assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/master.css" rel="stylesheet">
+    <link href="/assets/vendor/airdatepicker/css/datepicker.min.css" rel="stylesheet">
+    <link href="/assets/vendor/mdtimepicker/mdtimepicker.min.css" rel="stylesheet">
+
+<style>
+    .co{
+        background-color: #f0f0f0;
+    }
+</style>
+<div id="body" class="active">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="page-title">
+                <div class="container">
+                    <h3>View User</h3>
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">User Data</div>
+                            <div class="card-body" >
+                                <!-- style="background-color: #f0f0f0;" -->
+                                <form class="needs-validation" novalidate accept-charset="utf-8" method="post" enctype="multipart/form-data">
+                                    <div class="row g-2">
+                                        <div style="width: 100%; text-align: center;" class="mb-3 col-md-6">
+                                            <img id="imagePreview" src="<%= user.imageUrl %>" onerror="this.src='/assets/img/default_pp.jpg'" alt="user picture"  width="150px" height="150px" style=" object-fit: cover; border-radius: 50%;">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                        <label for="name" class="form-label">Name</label>
+                                        <input type="text" class="form-control co"  name="name" value="<%= user.name %>" disabled autocomplete="off" required>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                        <label for="gender" class="form-label">Gender</label>
+                                        <select name="gender" class="form-select co" disabled required>
+                                                <option value="" selected disabled hidden>Gender</option>
+                                                <option value="Male" <% if (user.gender == 'Male') { %> selected<% } %>>Male</option>
+                                                <option value="Female" <% if (user.gender == 'Female') { %> selected<% } %>>Female</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="mb-3 col-md-6">
+                                        <label for="username" class="form-label">Username</label>
+                                        <input type="text" class="form-control co" name="username" value="<%= user.username %>" disabled autocomplete="off" required>
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                        <label for="email_address" class="form-label">Email</label>
+                                        <input type="email" class="form-control co" name="email_address" value="<%= user.email_address %>" disabled  autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="mb-3 col-md-6">
+                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <input type="number" class="form-control co" name="phone" value="<%= user.phone %>" disabled  autocomplete="off">
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label for="role" class="form-label">Role</label>
+                                            <select name="role" class="form-select co" disabled required>
+                                                <option value="" selected disabled hidden>Role</option>
+                                                <option value="Admin" <% if (user.role == 'Admin') { %> selected<% } %>>Admin</option>
+                                                <option value="Store Manager" <% if (user.role == 'Store Manager') { %> selected<% } %>>Store Manager</option>
+                                                <option value="Advertising Manager" <% if (user.role == 'Advertising Manager') { %> selected<% } %>>Advertising Manager</option>
+                                                <option value="User" <% if (user.role == 'User') { %> selected<% } %>>User</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="mb-3 col-md-6">
+                                            <label for="birthday" class="form-label">Birthday</label>
+                                            <input type="text"  name="birthday" value="<%= user.birthday %>" disabled class="form-control co datepicker-here" data-language="en" autocomplete="off" aria-describedby="datepicker">                                                     
+                                        </div>
+                                        <div class="mb-3 col-md-6">
+                                            <label for="status" class="form-label">Status</label>
+                                            <select name="status" class="form-select co" disabled required>
+                                                <option value="" selected disabled hidden>Status</option>
+                                                <option value="Active" <% if (user.status == 'Active') { %> selected<% } %>>Active</option>
+                                                <option value="Pending" <% if (user.status == 'Pending') { %> selected<% } %>>Pending</option>
+                                                <option value="Inactive" <% if (user.status == 'Inactive') { %> selected<% } %>>Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Description/Bio</label>
+                                        <textarea type="text" class="form-control co" name="description" cols="30" rows="3" autocomplete="off" disabled><%= user.description %></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/form-validator.js"></script>
+    <!-- maybe remove the validator in the line above -->
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/airdatepicker/js/datepicker.min.js"></script>
+    <script src="/assets/vendor/airdatepicker/js/i18n/datepicker.en.js"></script>
+    <script src="/assets/js/script.js"></script>
