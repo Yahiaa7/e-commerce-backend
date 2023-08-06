@@ -1,0 +1,86 @@
+<!doctype html>
+<!-- 
+* Bootstrap Simple Admin Template
+* Version: 2.1
+* Author: Alexis Luna
+* Website: https://github.com/alexis-luna/bootstrap-simple-admin-template
+-->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Categories</title>
+    <!-- localhost:5000/dashboard/viewUser/1 -->
+    <link href="../../public/assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+    <link href="../../public/assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
+    <link href="../../public/assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
+    <link href="../../public/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../public/assets/vendor/datatables/datatables.min.css" rel="stylesheet">
+    <link href="../../public/assets/css/master.css" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <%- include('./layouts/nav-1.ejs') -%>
+        <div id="body" class="active">
+            <%- include('./layouts/nav-2.ejs') -%>
+            <div class="content">
+                <div class="container">
+                    <div class="page-title">
+                        <h3>Categories
+                            <a href="/dashboard/Categories/add" class="btn btn-sm btn-outline-primary float-end"><i class="fas fa-user-plus"></i>  Add Category</a>
+                            <div id="message" style="display: none;" role="alert"></div>
+                        </h3>
+                    </div>
+                    <div class="box box-primary">
+                        <div class="box-body">
+                            <table width="100%" class="table table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% categories.forEach((category, index) => { %>
+                                        <tr>
+                                            <td><%= category.name %></td>
+                                            <td><%= category.description %></td>
+                                            <td class="text-end">
+                                                <a href="/dashboard/Categories/<%= category.id %>" class="btn btn-outline-primary btn-rounded"><i class="fas fa-user"></i></a>
+                                                <a href="/dashboard/Categories/update/<%= category.id %>" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
+                                                <a href="#" id="deleteBtn" onclick="return confirmDelete('<%= category.id %>')" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('./layouts/confirmation-modal.ejs') -%>
+    <script src="../../public/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../public/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../public/assets/vendor/datatables/datatables.min.js"></script>
+    <script src="../../public/assets/js/initiate-datatables.js"></script>
+    <script src="../../public/assets/js/script.js"></script>
+    <script>
+        // data-bs-toggle="modal" data-bs-target="#confirmDeletionModal"
+        function confirmDelete(categoryId) {            
+                let modal = new bootstrap.Modal(document.getElementById("confirmDeletionModal"), {});
+                modal.show();
+                document.getElementById('yesDelete').onclick = () => {
+                    window.location.href = `/dashboard/Categories/delete/${categoryId}`;
+                    // or use fetch to do it and show success message 
+                    modal.hide();
+                }
+                return true;
+        }
+    </script>
+</body>
+</html>

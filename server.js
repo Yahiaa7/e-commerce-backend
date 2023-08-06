@@ -34,8 +34,8 @@ app.use(session({
   },
 }));
 
-app.use(ejsLayout);
-app.set('layout', './layouts/layout')
+// app.use(ejsLayout);
+// app.set('layout', './layouts/layout')
 app.set('view engine', 'ejs');
 
 

@@ -1,98 +1,131 @@
+<!doctype html>
+<!-- 
+* Bootstrap Simple Admin Template
+* Version: 2.1
+* Author: Alexis Luna
+* Website: https://github.com/alexis-luna/bootstrap-simple-admin-template
+-->
+<html lang="en">
 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Users</title>
-    <link href="/assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
-    <link href="/assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
-    <link href="/assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
-    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/datatables/datatables.min.css" rel="stylesheet">
-    <link href="/assets/css/master.css" rel="stylesheet">
-
-    <%- include('./layouts/confirmation-modal.ejs') -%>
-    <div id="body" class="active">
-        <div class="content">
-            <div class="container">
-                <div class="page-title">
-                    <h3>Users
-                        <a href="/dashboard/addUser" class="btn btn-sm btn-outline-primary float-end"><i class="fas fa-user-plus"></i>  Add User</a>
-                    </h3>
-                </div>
-                <div class="box box-primary">
-                    <div class="box-body">
-                        <table width="100%" class="table table-hover" id="dataTables-example">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Username</th>
-                                    <th>Email Address</th>
-                                    <th>Gender</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% users.forEach((user, index) => { %>
+    <link href="../../public/assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+    <link href="../../public/assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
+    <link href="../../public/assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
+    <link href="../../public/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../public/assets/vendor/datatables/datatables.min.css" rel="stylesheet">
+    <link href="../../public/assets/css/master.css" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <%- include('./layouts/nav-1.ejs') -%>
+        <div id="body" class="active">
+            <%- include('./layouts/nav-2.ejs') -%>
+            <div class="content">
+                <div class="container">
+                    <div class="page-title">
+                        <h3>Users
+                            <a href="/dashboard/users/add" class="btn btn-sm btn-outline-primary float-end"><i class="fas fa-user-plus"></i>  Add User</a>
+                            <div id="message" style="display: none;" role="alert"></div>
+                        </h3>
+                    </div>
+                    <div class="box box-primary">
+                        <div class="box-body">
+                            <table width="100%" class="table table-hover" id="dataTables-example">
+                                <thead>
                                     <tr>
-                                        <td><%= user.name %></td>
-                                        <td><%= user.username %></td>
-                                        <td><%= user.email_address %></td>
-                                        <td><%= user.gender %></td>
-                                        <td><%= user.role %></td>
-                                        <td>
-                                            <div class="mb-3 col-md-6">
-                                                <select id="status" name="status" class="form-select">
-                                                    <option onclick="" value="Active" <% if (user.status == 'Active') { %> selected<% } %>>Active</option>
-                                                    <option value="Pending" <% if (user.status == 'Pending') { %> selected<% } %>>Pending</option>
-                                                    <option value="Inactive" <% if (user.status == 'Inactive') { %> selected<% } %>>Inactive</option>
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <!-- <td><%#= user.status %></td> -->
-                                        <% if (user.role == 'Admin') { %>
-                                            <td class="text-end">
-                                                <a href="/dashboard/viewUser/<%= user.id %>" class="btn btn-outline-primary btn-rounded"><i class="fas fa-user"></i></a>
-                                            </td>
-                                        <% } else { %>
-                                            <td class="text-end">
-                                                <a href="/dashboard/viewUser/<%= user.id %>" class="btn btn-outline-primary btn-rounded"><i class="fas fa-user"></i></a>
-                                                <a href="/dashboard/updateUser/<%= user.id %>" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
-                                                <a href="#" id="deleteBtn" onclick="return confirmDelete('<%= user.id %>')" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        <% } %>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>Email Address</th>
+                                        <th>Gender</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th></th>
                                     </tr>
-                                <% }); %>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <% users.forEach((user, index) => { %>
+                                        <tr>
+                                            <td><%= user.name %></td>
+                                            <td><%= user.username %></td>
+                                            <td><%= user.email_address %></td>
+                                            <td><%= user.gender %></td>
+                                            <td><%= user.role %></td>
+                                            <td>
+                                                <% if (user.role != 'Admin') { %>
+                                                    <div class="mb-3 col-md-7">
+                                                        <select id="status" name="status" onchange="setStatus(this.value, '<%= user.id %>')" class="form-select">
+                                                            <option value="Active" <% if (user.status == 'Active') { %> selected<% } %>>Active</option>
+                                                            <option value="Pending" <% if (user.status == 'Pending') { %> selected<% } %>>Pending</option>
+                                                            <option value="Inactive" <% if (user.status == 'Inactive') { %> selected<% } %>>Inactive</option>
+                                                        </select>
+                                                    </div>
+                                                <% } else { %>
+                                                    <%= user.status %>
+                                                <% } %>
+                                            </td>
+                                            <% if (user.role == 'Admin') { %>
+                                                <td class="text-end">
+                                                    <a href="/dashboard/users/<%= user.id %>" class="btn btn-outline-primary btn-rounded"><i class="fas fa-user"></i></a>
+                                                </td>
+                                            <% } else { %>
+                                                <td class="text-end">
+                                                    <a href="/dashboard/users/<%= user.id %>" class="btn btn-outline-primary btn-rounded"><i class="fas fa-user"></i></a>
+                                                    <a href="/dashboard/users/update/<%= user.id %>" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
+                                                    <a href="#" id="deleteBtn" onclick="return confirmDelete('<%= user.id %>')" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash"></i></a>
+                                                </td>
+                                            <% } %>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="/assets/vendor/jquery/jquery.min.js"></script>
-    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/assets/vendor/datatables/datatables.min.js"></script>
-    <script src="/assets/js/initiate-datatables.js"></script>
-    <script src="/assets/js/script.js"></script>
+    <%- include('./layouts/confirmation-modal.ejs') -%>
+    <script src="../../public/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../public/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../public/assets/vendor/datatables/datatables.min.js"></script>
+    <script src="../../public/assets/js/initiate-datatables.js"></script>
+    <script src="../../public/assets/js/script.js"></script>
     <script>
         // data-bs-toggle="modal" data-bs-target="#confirmDeletionModal"
         function confirmDelete(userId) {            
                 let modal = new bootstrap.Modal(document.getElementById("confirmDeletionModal"), {});
                 modal.show();
                 document.getElementById('yesDelete').onclick = () => {
-                    window.location.href = `/dashboard/deleteUser/${userId}`;
+                    window.location.href = `/dashboard/users/delete/${userId}`;
                     // or use fetch to do it and show success message 
                     modal.hide();
                 }
                 return true;
         }
-        let status = document.getElementById('status');
-        $("#status option").click(function () {
-            alert(this.id);
-        });
-        // status.addEventListener = ("change", (e, userId) => {
-        //     console.log(userId);
-        //     console.log(e.target.value); 
-        //     return true;
-        // }); 
+
+        async function setStatus(status, userId) { 
+            console.log(status);
+            console.log(userId);
+            const response = await fetch(`/dashboard/users/setStatus/${userId}`,
+            {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({status})
+            });
+            let messageTag = document.getElementById('message');
+            const result = await response.json();
+
+            response.ok ? ( messageTag.setAttribute('class', 'alert alert-success'),
+                            messageTag.innerHTML = result.message)
+                        : ( messageTag.setAttribute('class', 'alert alert-danger'),
+                            messageTag.innerHTML = result.error.message );
+
+            messageTag.style.display = 'block'; 
+        }
     </script>
+</body>
+</html>

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Add User</title>
+    <title>Add Product</title>
     <link href="../../public/assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
     <link href="../../public/assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
     <link href="../../public/assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
@@ -28,7 +28,7 @@
                 <div class="container-fluid">
                     <div class="page-title">
                         <div class="container">
-                            <h3>Add User</h3>
+                            <h3>Add Product</h3>
                             <% if (message) { %>
                                 <div class="alert alert-success">
                                     <h4 class="alert-title"><i class="fas fa-check"></i> Success</h4>
@@ -43,7 +43,7 @@
                             <% } %>
                             <div class="col-lg-12">
                                 <div class="card">
-                                    <div class="card-header">User Data</div>
+                                    <div class="card-header">Product Info</div>
                                     <div class="card-body" >
                                         <!-- style="background-color: #f0f0f0;" -->
                                         <form class="needs-validation" novalidate accept-charset="utf-8" method="post" enctype="multipart/form-data">
@@ -57,9 +57,9 @@
                                                 <input type="text" class="form-control co"  name="name" placeholder="Name" autocomplete="off" required>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
-                                                <label for="gender" class="form-label">Gender</label>
+                                                <label for="gender" class="form-label">Category</label>
                                                 <select name="gender" class="form-select co" required>
-                                                        <option value="" selected disabled hidden>Gender</option>
+                                                        <option value="" selected disabled hidden>Category</option>
                                                         <option value="Male">Male</option>
                                                         <option value="Female">Female</option>
                                                 </select>
@@ -67,57 +67,20 @@
                                             </div>
                                             <div class="row g-2">
                                                 <div class="mb-3 col-md-6">
-                                                <label for="username" class="form-label">Username</label>
-                                                <input type="text" class="form-control co" name="username" placeholder="Username" autocomplete="off" required>
+                                                <label for="price" class="form-label">Price</label>
+                                                <input type="number" class="form-control co" name="price" placeholder="Price" autocomplete="off" required>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
-                                                <label for="password" class="form-label">Password</label>
-                                                <input type="text" class="form-control co" name="password" placeholder="Password" autocomplete="off" required>
-                                                <!-- type="password" -->
-                                            </div>
-                                            </div>
-                                            <div class="row g-2">
-                                                <div class="mb-3 col-md-6">
-                                                <label for="email_address" class="form-label">Email</label>
-                                                <input type="email" class="form-control co" name="email_address" placeholder="Email Address" autocomplete="off">
-                                                </div>
-                                                <div class="mb-3 col-md-6">
-                                                <label for="phone" class="form-label">Phone Number</label>
-                                                <input type="number" class="form-control co" name="phone" placeholder="Phone number" autocomplete="off">
-                                                </div>
-                                            </div>
-                                            <div class="row g-2">
-                                                <div class="mb-3 col-md-6">
-                                                    <label for="birthday" class="form-label">Birthday</label>
-                                                    <input type="text"  name="birthday" class="form-control co datepicker-here" data-language="en" autocomplete="off" aria-describedby="datepicker" placeholder="Birthday">
-                                                    <!-- <input type="date" class="form-control co" name="birthday" placeholder="Birthday"> -->
-                                                </div>
-                                                <div class="mb-3 col-md-3">
-                                                    <label for="role" class="form-label">Role</label>
-                                                    <select name="role" class="form-select co" required>
-                                                        <option value="" selected disabled hidden>Role</option>
-                                                        <option value="Admin">Admin</option>
-                                                        <option value="Store Manager">Store Manager</option>
-                                                        <option value="Advertising Manager">Advertising Manager</option>
-                                                        <option value="User">User</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3 col-md-3">
-                                                    <label for="status" class="form-label">Status</label>
-                                                    <select name="status" class="form-select co" required>
-                                                        <option value="" selected disabled hidden>Status</option>
-                                                        <option value="Active">Active</option>
-                                                        <option value="Pending">Pending</option>
-                                                        <option value="Inactive">Inactive</option>
-                                                    </select>
+                                                <label for="quantity" class="form-label">Quantity</label>
+                                                <input type="number" class="form-control co" name="quantity" placeholder="Quantity" autocomplete="off" required>
                                                 </div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="description" class="form-label">Description/Bio</label>
+                                                <label for="description" class="form-label">Description</label>
                                                 <textarea type="text" class="form-control co" name="description" placeholder="Bio .." cols="30" rows="3" autocomplete="off"></textarea>
                                             </div>
                                             <div style="width: 100%; text-align: center;">
-                                                <input class="btn btn-primary" type="submit" value="Add User">
+                                                <input class="btn btn-primary" type="submit" value="Add Product">
                                             </div>
                                         </form>
                                     </div>

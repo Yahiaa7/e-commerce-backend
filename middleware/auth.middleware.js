@@ -3,14 +3,8 @@ const { singleUpload, multer } = require('../config/multer.config');
 const { redisClient } = require('../utils/redis');
 const { verify, JsonWebTokenError, TokenExpiredError } = require('jsonwebtoken');
 const { responseFailed } = require('../utils/responseReturn');
+const { adminController: { getLogin } } = require('../controllers');
 
-
-/**
- * responseFailed(res, 400, {
-            error_message: 'Bad Params, error validating your information!',
-            error: err.message
-        });
- */
 
 exports.checkDuplicateUser = async (req, res, next) => {
     try {
@@ -41,6 +35,12 @@ exports.imageUploadUser = async (req, res, next) => {
         });
         return next();
     });
+};
+
+
+exports.isLoggedIn = (req, res, next) => {
+    if(!req.session?.isLoggedIn) return res.redirect('/dashboard/login');
+    else return next();
 };
 
 exports.authenticateJWT = async (req, res, next) => {

@@ -1,33 +1,34 @@
 const moment = require('moment');
 const { User, Sequelize } = require('../models');
 const { compare, genSalt, hash } = require('bcrypt');
+const { responseSuccess, responseFailed } = require('../utils/responseReturn');
 
 
-exports.get403 = (req, res) => res.render('403.ejs', { title: '403', });
+exports.get403 = (req, res) => res.render('403.ejs', { });
 
-exports.get404 = (req, res) => res.render('404.ejs', { title: '404', });
+exports.get404 = (req, res) => res.render('404.ejs', { });
 
-exports.get500 = (req, res) => res.render('500.ejs', { title: '500', });
+exports.get500 = (req, res) => res.render('500.ejs', { });
 
-exports.getAdminLogin = (req, res) => {
+exports.getLogin = (req, res) => {
     // req.session.isLoggedIn ?
     // res.redirect('/dashboard/') : res.render('login.ejs', { error_message: '' });
     if (req.session.isLoggedIn) res.redirect('/dashboard/');
     else {
-        res.render('login.ejs', { title: 'Login', error_message: '' });
+        res.render('login.ejs', { error_message: '' });
     }
 };
 
-exports.postAdminLogin = async (req, res) => {
+exports.postLogin = async (req, res) => {
     if (!req.body.username || !req.body.password) return res.render('login.ejs', {
-        title:'Login', error_message: 'Please fill all fields! :('
+        error_message: 'Please fill all fields! :('
     });
     let { username, password } = req.body;
     let user = await User.findOne({ where: { username } });
-    if (!user) return res.render('login.ejs', { title:'Login', error_message: 'Not Found, No such user :(' });
+    if (!user) return res.render('login.ejs', { error_message: 'Not Found, No such user :(' });
     const isValidPassword = await compare(password, user.password);
-    if (!isValidPassword) return res.render('login.ejs', { title:'Login', error_message: 'Unauthorized, Incorrect Password! :(' });
-    if (!(user.role == 'Admin')) return res.render('login.ejs', { title:'Login', error_message: 'Unauthorized Access!' });
+    if (!isValidPassword) return res.render('login.ejs', { error_message: 'Unauthorized, Incorrect Password! :(' });
+    if (!(user.role == 'Admin')) return res.render('login.ejs', { error_message: 'Unauthorized Access!' });
 
     req.session.uid = user.id;
     req.session.role = user.role;
@@ -36,7 +37,7 @@ exports.postAdminLogin = async (req, res) => {
 };
 
 // send admin data with the getHome
-exports.getHome = (req, res) => res.render('index.ejs',{title:'Home'});
+exports.getHome = (req, res) => res.render('index.ejs', { });
 
 // send list of users paginated
 exports.getUsers = async (req, res) => {
@@ -49,8 +50,7 @@ exports.getUsers = async (req, res) => {
     });
 
     return res.render('users.ejs', {
-        title:'Users', 
-        page,
+                page,
         pageSize: users.rows.length,
         totalPages: Math.ceil(users.count / pageSize),
         users: users.rows
@@ -58,7 +58,7 @@ exports.getUsers = async (req, res) => {
 };
 
 // send add-user page
-exports.getAddUser = (req, res) => res.render('add-user.ejs', { title:'Add User', title: 'Login', message: '', error_message: '' });
+exports.getAddUser = (req, res) => res.render('add-user.ejs', { message: '', error_message: '' });
 
 // add user to database
 exports.postAddUser = async (req, res) => {
@@ -71,16 +71,15 @@ exports.postAddUser = async (req, res) => {
         else req.body.birthday = null;
         if (req.body.phone) req.body.phone = String(req.body.phone);
         let user = await User.create(req.body);
-        return res.render('add-user.ejs', { title: 'Add User', message: `Success, new ${user.role} added successfully!`, error_message: '' });
+        return res.render('add-user.ejs', { message: `Success, new ${user.role} added successfully!`, error_message: '' });
     } catch (err) {
         if (err instanceof Sequelize.Error) return res.render('add-user.ejs', {
-            title: 'Add User',
             message: '',
             error_message: 'Bad Params, error validating your information!'
         });
         else return res.redirect('/dashboard/500');
         // else return res.render('login.ejs', {
-        //     title:'Login', error_message: "Internal Error, Could't process your request! >_<"
+        //     error_message: "Internal Error, Could't process your request! >_<"
         // });
     }
 };
@@ -94,7 +93,7 @@ exports.getViewUser = async (req, res) => {
         if (!user) return res.redirect('/dashboard/404');
         if (user.dataValues.birthday) user.dataValues.birthday = moment(user.dataValues.birthday).format('YYYY-MM-DD').split(" ");
         if (user.dataValues.image) user.dataValues.imageUrl = `http://localhost:5000/images/${user.image.split('\\')[3]}`;
-        res.render('view-user.ejs', { title:'View User', user: user.dataValues });
+        res.render('view-user.ejs', { user: user.dataValues });
     } catch (err) {
         return res.redirect('/dashboard/500');
     }
@@ -109,7 +108,7 @@ exports.getUpdateUser = async (req, res) => {
         if (!user) return res.redirect('/dashboard/404');
         if (user.dataValues.birthday) user.dataValues.birthday = moment(user.dataValues.birthday).format('YYYY-MM-DD').split(" ");
         if (user.dataValues.image) user.dataValues.imageUrl = `http://localhost:5000/images/${user.image.split('\\')[3]}`;
-        return res.render('update-user.ejs', { title:'Update User', user: user.dataValues, message: `` });
+        return res.render('update-user.ejs', { user: user.dataValues, message: `` });
     } catch (err) {
         return res.redirect('/dashboard/500');
     }
@@ -133,8 +132,30 @@ exports.putUpdateUser = async (req, res) => {
         await user.save();
         if (user.dataValues.birthday) user.dataValues.birthday = moment(user.dataValues.birthday).format('YYYY-MM-DD').split(" ");
         if (user.dataValues.image) user.dataValues.imageUrl = `http://localhost:5000/images/${user.image.split('\\')[3]}`;
-        return res.render('update-user.ejs', { title:'Update User', user: user.dataValues, message: `${user.role} updated successfully :)` });
+        return res.render('update-user.ejs', { user: user.dataValues, message: `${user.role} updated successfully :)` });
     } catch (err) {
+        return res.redirect('/dashboard/500');
+    }
+};
+
+// update user status in the database
+exports.setStatus = async (req, res) => {
+    try {
+        let { id } = req.params;
+        let { status } = req.body;
+        // if (!id || !status) return res.redirect('/dashboard/404');
+        if (!id || !status) responseFailed(res, 400, { message: 'Insufficient params!' })
+        let user = await User.findByPk(id);
+        // if (!user) return res.redirect('/dashboard/404');
+        if (!user) responseFailed(res, 404, { message: 'No such user!' });
+        user.set({ status });
+        await user.save();
+        return responseSuccess(res, 200, {}, `${user.name} status updated successfully!`);
+        // const referringPage = req.header('referer') || '/users/';
+        // console.log(referringPage);
+        // return res.render('update-user.ejs', { user: user.dataValues, message: `${user.role} status updated successfully :)` });
+    } catch (err) {
+        console.log(err);
         return res.redirect('/dashboard/500');
     }
 };

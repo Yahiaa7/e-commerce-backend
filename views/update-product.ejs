@@ -11,7 +11,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Update User</title>
+    <title>Update Product</title>
     <link href="../../../public/assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
     <link href="../../../public/assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
     <link href="../../../public/assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
@@ -34,7 +34,7 @@
                 <div class="container-fluid">
                     <div class="page-title">
                         <div class="container">
-                            <h3>Update User</h3>
+                            <h3>Update Product</h3>
                             <% if (message) { %>
                                 <div class="alert alert-success">
                                     <h4 class="alert-title"><i class="fas fa-check"></i> Success</h4>
@@ -43,7 +43,7 @@
                             <% } %>
                             <div class="col-lg-12">
                                 <div class="card">
-                                    <div class="card-header">User Data</div>
+                                    <div class="card-header">Product Data</div>
                                     <div class="card-body" >
                                         <!-- style="background-color: #f0f0f0;" -->
                                         <form class="needs-validation" novalidate accept-charset="utf-8" method="post" enctype="multipart/form-data">
@@ -54,73 +54,33 @@
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                 <label for="name" class="form-label">Name</label>
-                                                <input type="text" class="form-control co"  name="name" value="<%= user.name %>" autocomplete="off" required>
+                                                <input type="text" class="form-control co"  name="name" value="<%= product.name %>" autocomplete="off" required>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
-                                                <label for="gender" class="form-label">Gender</label>
+                                                <label for="gender" class="form-label">Category</label>
                                                 <select name="gender" class="form-select co" required>
-                                                        <option value="" disabled selected hidden>Gender</option>
-                                                        <option value="Male" <% if (user.gender == 'Male') { %> selected<% } %>>Male</option>
-                                                        <option value="Female" <% if (user.gender == 'Female') { %> selected<% } %>>Female</option>
+                                                        <option value="" disabled selected hidden>Category</option>
+                                                        <!-- <option value="Male" <%# if (user.gender == 'Male') { %> selected<% } %>>Male</option>
+                                                        <option value="Female" <%# if (user.gender == 'Female') { %> selected<% } %>>Female</option> -->
                                                 </select>
                                                 </div>
                                             </div>
                                             <div class="row g-2">
                                                 <div class="mb-3 col-md-6">
-                                                <label for="username" class="form-label">Username</label>
-                                                <input type="text" class="form-control co" name="username" value="<%= user.username %>" autocomplete="off" required>
-                                                </div>
-                                                
-                                                    <!-- <div class="mb-3 col-md-3">
-                                                        <label for="password" class="form-label">Password</label>
-                                                        <input type="text" class="form-control co" id="password" name="password" autocomplete="off" required>
-                                                    </div>
-                                                    <div class="mb-3 col-md-3">   
-                                                        <label for="confirmPassword" class="form-label">Confirm Password</label>
-                                                        <input type="text" class="form-control co" id="confirmPassword" name="confirmPassword" autocomplete="off" required>
-                                                    </div> -->
-                                                    <div class="mb-3 col-md-6">
-                                                    <label for="email_address" class="form-label">Email</label>
-                                                    <input type="email" class="form-control co" name="email_address" value="<%= user.email_address %>"  autocomplete="off">
-                                                    </div>
-                                            </div>
-                                            <div class="row g-2">
-                                                <div class="mb-3 col-md-6">
-                                                <label for="phone" class="form-label">Phone Number</label>
-                                                <input type="number" class="form-control co" name="phone" value="<%= user.phone %>"  autocomplete="off">
+                                                <label for="price" class="form-label">Price</label>
+                                                <input type="number" class="form-control co" name="price" value="<%= product.price %>" placeholder="Price" autocomplete="off" required>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
-                                                    <label for="role" class="form-label">Role</label>
-                                                    <select name="role" class="form-select co" required>
-                                                        <option value=""disabled selected hidden>Role</option>
-                                                        <option value="Admin" <% if (user.role == 'Admin') { %> selected<% } %>>Admin</option>
-                                                        <option value="Store Manager" <% if (user.role == 'Store Manager') { %> selected<% } %>>Store Manager</option>
-                                                        <option value="Advertising Manager" <% if (user.role == 'Advertising Manager') { %> selected<% } %>>Advertising Manager</option>
-                                                        <option value="User" <% if (user.role == 'User') { %> selected<% } %>>User</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="row g-2">
-                                                <div class="mb-3 col-md-6">
-                                                    <label for="birthday" class="form-label">Birthday</label>
-                                                    <input type="text"  name="birthday" value="<%= user.birthday %>" class="form-control co datepicker-here" data-language="en" autocomplete="off" aria-describedby="datepicker">                                                     
-                                                </div>
-                                                <div class="mb-3 col-md-6">
-                                                    <label for="status" class="form-label">Status</label>
-                                                    <select name="status" class="form-select co" required>
-                                                        <option value=""disabled selected hidden>Status</option>
-                                                        <option value="Active" <% if (user.status == 'Active') { %> selected<% } %>>Active</option>
-                                                        <option value="Pending" <% if (user.status == 'Pending') { %> selected<% } %>>Pending</option>
-                                                        <option value="Inactive" <% if (user.status == 'Inactive') { %> selected<% } %>>Inactive</option>
-                                                    </select>
+                                                <label for="quantity" class="form-label">Quantity</label>
+                                                <input type="number" class="form-control co" name="quantity" value="<%= product.quantity %>" placeholder="Quantity" autocomplete="off" required>
                                                 </div>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="description" class="form-label">Description/Bio</label>
-                                                <textarea type="text" class="form-control co" name="description" cols="30" rows="3" autocomplete="off"><%= user.description %></textarea>
+                                                <textarea type="text" class="form-control co" name="description" cols="30" rows="3" autocomplete="off"><%= product.description %></textarea>
                                             </div>
                                             <div style="width: 100%; text-align: center;">
-                                                <input class="btn btn-primary" type="submit" value="Update User">
+                                                <input class="btn btn-primary" type="submit" value="Update Product">
                                             </div>
                                         </form>
                                     </div>
