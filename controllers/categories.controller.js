@@ -44,7 +44,9 @@ exports.getCategoryWithProducts = async (req, res) => {
     try {
         let { id } = req.params;
         if (!id) return res.redirect('/dashboard/404');
-        let category = await Category.findByPk(id, { include: Product });
+        let category = await Category.findByPk(id, {
+            // include: Product
+        });
         if (!category) return res.redirect('/dashboard/404');
         console.log(category);
         // if (user.dataValues.image) user.dataValues.imageUrl = `http://localhost:5000/images/${user.image.split('\\')[3]}`;
