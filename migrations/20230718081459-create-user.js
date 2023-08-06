@@ -44,6 +44,9 @@ module.exports = {
       role: {
         type: Sequelize.ENUM('Admin', 'Store Manager', 'Advertising Manager', 'User'),
         allowNull: false
+      }, status: {
+        type: Sequelize.ENUM('Active', 'Pending', 'Inactive'),
+        defaultValue: 'Pending'
       },
       status: {
         type: DataTypes.ENUM('Active', 'Pending', 'Inactive'),
