@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.Products, { foreignKey: 'user_id' });
-      User.hasMany(models.Advertisements, { foreignKey: 'user_id' });
+      User.hasMany(models.Product, { foreignKey: 'user_id' });
+      User.hasMany(models.Advertisement, { foreignKey: 'user_id' });
       User.hasMany(models.MonthlyExpenses, { foreignKey: 'user_id' });
       User.hasMany(models.ProductRatings, { foreignKey: 'user_id' });
-      User.hasMany(models.Invoices, { foreignKey: 'user_id' });
+      User.hasMany(models.Invoice, { foreignKey: 'user_id' });
     }
   }
   User.init({
