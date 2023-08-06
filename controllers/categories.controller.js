@@ -45,7 +45,7 @@ exports.getCategoryWithProducts = async (req, res) => {
         let { id } = req.params;
         if (!id) return res.redirect('/dashboard/404');
         let category = await Category.findByPk(id, {
-            // include: Product
+            include: Product
         });
         if (!category) return res.redirect('/dashboard/404');
         console.log(category);
