@@ -9,11 +9,9 @@ app.use(
   '/images',
   express.static('public/images/users'),
   express.static('public/images/products'),
-<<<<<<< HEAD
-=======
   express.json(),
   express.urlencoded({ extended: true }),
->>>>>>> migration_associations
+
 );
 
 app.use(
@@ -49,10 +47,8 @@ dbConnection();
 
 // linking routes
 app.use('/api', require('./routes/index.routes'));
-<<<<<<< HEAD
+
 app.use('/dashboard', require('./routes/dashboard.routes'));
-=======
->>>>>>> migration_associations
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
