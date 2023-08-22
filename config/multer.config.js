@@ -3,11 +3,13 @@ const path = require('path');
 
 const singleUpload = multer({
     storage: multer.diskStorage({
-        destination: (req, file, cb) => cb(null, 'public/images/users'),
+        destination: (req, file, cb) => {
+            cb(null, 'public/images/users');
+        },
         filename: (req, file, cb) =>
             cb(null, `userImage-${Date.now()}${path.extname(file.originalname).toLowerCase()}`)
     }),
-    fileFilter: (req, file, cb) => {
+    fileFilter: (req, file, cb) => {   
         cb(null, true);
     }
 });

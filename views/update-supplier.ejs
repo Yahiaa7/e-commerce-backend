@@ -1,0 +1,134 @@
+<!doctype html>
+<!-- 
+* Bootstrap Simple Admin Template
+* Version: 2.1
+* Author: Alexis Luna
+* Website: https://github.com/alexis-luna/bootstrap-simple-admin-template
+-->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Update Supplier</title>
+    <link href="../../../public/assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../public/assets/css/master.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/airdatepicker/css/datepicker.min.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/mdtimepicker/mdtimepicker.min.css" rel="stylesheet">
+</head>
+<style>
+    .co{
+        background-color: #f0f0f0;
+    }
+</style>
+<body>
+    <div class="wrapper">
+        <%- include('./layouts/nav-1.ejs') -%>
+        <div id="body" class="active">
+            <%- include('./layouts/nav-2.ejs') -%>
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="page-title">
+                        <div class="container">
+                            <h3>Update Supplier</h3>
+                            <% if (message) { %>
+                                <div class="alert alert-success">
+                                    <h4 class="alert-title"><i class="fas fa-check"></i> Success</h4>
+                                    <%= message %>
+                                </div>
+                            <% } %>
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">Supplier Data</div>
+                                    <div class="card-body" >
+                                        <!-- style="background-color: #f0f0f0;" -->
+                                        <form class="needs-validation" novalidate accept-charset="utf-8" method="post" enctype="multipart/form-data">
+                                            <div class="row g-2">
+                                                <div style="width: 100%; text-align: center;" class="mb-3 col-md-6">
+                                                    <img id="imagePreview" src="<%= supplier.imageUrl %>" onerror="this.src='../../../public/assets/img/default_pp.jpg'" alt="supplier picture"  width="150px" height="150px" style=" object-fit: cover; aspect-ratio: 3/4; border-radius: 50%; overflow: hidden; cursor: pointer;" >
+                                                    <input type="file" id="fileInput" name="image" style="display: none;">
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="name" class="form-label">Name</label>
+                                                    <input type="text" class="form-control co"  name="name" value="<%= supplier.name %>" autocomplete="off" required>
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="commercial_number" class="form-label">Commercial Number</label>
+                                                    <input type="number" class="form-control co"  name="commercial_number" value="<%= supplier.commercial_number %>" placeholder="Commercial Number" autocomplete="off" required>
+                                                </div>
+                                            </div>
+                                            <div class="row g-2">
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="birthday" class="form-label">Birthday</label>
+                                                    <input type="text"  name="birthday" value="<%= supplier.birthday %>" class="form-control co datepicker-here" data-language="en" autocomplete="off" aria-describedby="datepicker" placeholder="Birthday">
+                                                    <!-- <input type="date" class="form-control co" name="birthday" placeholder="Birthday"> -->
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="gender" class="form-label">Gender</label>
+                                                    <select name="gender" class="form-select co" required>
+                                                        <option value="" disabled selected hidden>Gender</option>
+                                                        <option value="Male" <% if (supplier.gender == 'Male') { %> selected<% } %>>Male</option>
+                                                        <option value="Female" <% if (supplier.gender == 'Female') { %> selected<% } %>>Female</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row g-2">                                   
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="email_address" class="form-label">Email</label>
+                                                    <input type="email" class="form-control co" name="email_address" value="<%= supplier.email_address %>"  autocomplete="off">
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="phone" class="form-label">Phone Number</label>
+                                                    <input type="number" class="form-control co" name="phone" value="<%= supplier.phone %>" placeholder="Phone number" autocomplete="off">
+                                                    </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="description" class="form-label">Description/Bio</label>
+                                                <textarea type="text" class="form-control co" name="description" cols="30" rows="3" autocomplete="off"><%= supplier.description %></textarea>
+                                            </div>
+                                            <div style="width: 100%; text-align: center;">
+                                                <input class="btn btn-primary" type="submit" value="Update Supplier">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../../public/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../../public/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../public/assets/js/form-validator.js"></script>
+    <!-- maybe remove the validator in the line above -->
+    <script src="../../../public/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../../public/assets/vendor/airdatepicker/js/datepicker.min.js"></script>
+    <script src="../../../public/assets/vendor/airdatepicker/js/i18n/datepicker.en.js"></script>
+    <script src="../../../public/assets/js/script.js"></script>
+    <script>
+        const imagePreview = document.getElementById('imagePreview');
+        const fileInput = document.getElementById('fileInput');
+
+        imagePreview.onclick = () => fileInput.click();
+        fileInput.onchange = (event) => {
+            const selectedFile = event.target.files[0];
+            if (selectedFile) {
+                console.log(selectedFile);
+                let reader = new FileReader();
+                console.log(event.target.result);
+                reader.onload = (event) => imagePreview.setAttribute('src', event.target.result);
+                reader.readAsDataURL(selectedFile);
+
+                console.log(imagePreview.getAttribute('src'));
+            }
+        };
+    </script>
+</body>
+
+</html>

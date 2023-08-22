@@ -1,5 +1,8 @@
-const authMiddleware = require('./auth.middleware');
+const apiMiddleware = require('./api');
+const dashboardMiddleware = require('./dashboard');
+
 
 module.exports = {
-    authMiddleware
+    apiMiddleware,
+    dashboardMiddleware
 };

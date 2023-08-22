@@ -1,0 +1,16 @@
+<nav aria-label="..." >
+    <ul class="pagination" style="justify-content: center;">
+      <li class="page-item <% if (page == 1) { %> disabled <% } %>">
+        <a class="page-link" href="?page=<%= page-1 %>">Previous</a>
+      </li>
+      <% for( let pageNumber = 1; pageNumber <= totalPages; pageNumber++ ) { %>
+
+        <li class="page-item <% if (pageNumber == page) { %> active <% } %>">
+            <a class="page-link" href="?page=<%= pageNumber %>"><%= pageNumber %></a></li>
+      <% } %>
+      
+      <li class="page-item <% if (page == totalPages) { %> disabled <% } %>">
+        <a class="page-link" href="?page=<%= page+1 %>">Next</a>
+      </li>
+    </ul>
+  </nav>

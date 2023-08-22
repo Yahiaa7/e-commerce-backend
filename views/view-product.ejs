@@ -43,22 +43,34 @@
                                         <form class="needs-validation" novalidate accept-charset="utf-8" method="post" enctype="multipart/form-data">
                                             <div class="row g-2">
                                                 <div style="width: 100%; text-align: center;" class="mb-3 col-md-6">
-                                                    <img id="imagePreview" src="<%= user.imageUrl %>" onerror="this.src='../../public/assets/img/default_pp.jpg'" alt="user picture"  width="150px" height="150px" style=" object-fit: cover; border-radius: 50%;">
+                                                    <!-- <img id="imagePreview" src="../../public/assets/img/default_pp.jpg" onerror="this.src='../../public/assets/img/default_pp.jpg'" alt="user picture"  width="150px" height="150px" style=" object-fit: cover; aspect-ratio: 3/4; border-radius: 50%; overflow: hidden; cursor: pointer;" > -->
+                                                    <label class="form-label"><h3>Product Images</h3></label>
+                                                    <div id="imagesPreview" class="imagesPreview" style="display: flex; justify-content: space-evenly;">
+                                                        <% for( let index = 0; index < 5; index++ ) { %>
+                                                            <% if (product.ProductImages[index]) { %>
+                                                                <img src="http://localhost:5000/images/<%= product.ProductImages[index].name %>" onerror="this.src='../../public/assets/img/default_product.png'" class="rounded" width="150px" style="object-fit: cover;">                                                         
+                                                            <% } else { %>
+                                                                <img src="../../public/assets/img/default_product.png" onerror="this.src='../../public/assets/img/default_product.png'" class="rounded" width="150px" style="object-fit: cover;">
+                                                            <% }%>
+                                                        <% } %>
+                                                    </div>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                 <label for="name" class="form-label">Name</label>
                                                 <input type="text" class="form-control co"  name="name" value="<%= product.name %>" disabled autocomplete="off" required>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
-                                                <label for="gender" class="form-label">Category</label>
-                                                <select name="gender" class="form-select co" disabled required>
-                                                        <option value="" selected disabled hidden>Category</option>
-                                                        <!-- <option value="Male" <%# if (user.gender == 'Male') { %> selected<% } %>>Male</option>
-                                                        <option value="Female" <%# if (user.gender == 'Female') { %> selected<% } %>>Female</option> -->
-                                                </select>
+                                                    <label for="category" class="form-label">Category</label>
+                                                    <select name="category" class="form-select co" disabled required>
+                                                            <option value="" selected disabled hidden><%= product.Category.name %></option>
+                                                    </select>
                                                 </div>
-                                            </div>
-                                            <div class="row g-2">
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="supplier" class="form-label">Supplier</label>
+                                                    <select name="supplier" class="form-select co" disabled required>
+                                                            <option value="" selected disabled hidden><%= product.Supplier.name %></option>
+                                                    </select>
+                                                </div>
                                                 <div class="mb-3 col-md-6">
                                                 <label for="price" class="form-label">Price</label>
                                                 <input type="number" class="form-control co" name="price" value="<%= product.price %>" disabled placeholder="Price" autocomplete="off">
@@ -67,10 +79,10 @@
                                                 <label for="quantity" class="form-label">Quantity</label>
                                                 <input type="number" class="form-control co" name="quantity" value="<%= product.quantity %>" disabled placeholder="Quantity" autocomplete="off">
                                                 </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="description" class="form-label">Description/Bio</label>
-                                                <textarea type="text" class="form-control co" name="description" cols="30" rows="3" autocomplete="off" disabled><%= user.description %></textarea>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="description" class="form-label">Description/Bio</label>
+                                                    <textarea type="text" class="form-control co" name="description" cols="30" rows="3" autocomplete="off" disabled><%= product.description %></textarea>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>

@@ -22,7 +22,7 @@ module.exports = {
         allowNull: false
       },
       status: {
-        type: Sequelize.ENUM('Active', 'Inactive'),
+        type: Sequelize.ENUM('Active', 'Inactive', 'Expired'),
         defaultValue: 'Inactive',
         allowNull: false
       },

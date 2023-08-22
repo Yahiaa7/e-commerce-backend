@@ -41,43 +41,79 @@
                                     <%= message %>
                                 </div>
                             <% } %>
+                            <% if (Array.isArray(error_message)) { %>
+                                <ul>
+                                    <div class="alert alert-danger" >
+                                        <h5 class="alert-title"><i class="fas fa-exclamation-triangle"></i> Error!</h5>
+                                        <% error_message.forEach(err => { %>
+                                            <li style="margin-left: 30px;"><%= err %></li>
+                                        <% }); %>
+                                    </div>
+                                </ul>
+                            <% } else if (error_message) { %>
+                                <div class="alert alert-danger">
+                                    <h5 class="alert-title"><i class="fas fa-exclamation-triangle"></i> Error!</h5>
+                                    <%= error_message %>
+                                </div>
+                            <% } %>
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header">Product Data</div>
                                     <div class="card-body" >
                                         <!-- style="background-color: #f0f0f0;" -->
-                                        <form class="needs-validation" novalidate accept-charset="utf-8" method="post" enctype="multipart/form-data">
+                                        <form id="upForm" class="needs-validation" novalidate accept-charset="utf-8" method="post" enctype="multipart/form-data">
+                                            <!-- enctype="multipart/form-data"> -->
                                             <div class="row g-2">
                                                 <div style="width: 100%; text-align: center;" class="mb-3 col-md-6">
-                                                    <img id="imagePreview" src="<%= user.imageUrl %>" onerror="this.src='../../../public/assets/img/default_pp.jpg'" alt="user picture"  width="150px" height="150px" style=" object-fit: cover; aspect-ratio: 3/4; border-radius: 50%; overflow: hidden; cursor: pointer;" >
-                                                    <input type="file" id="fileInput" name="image" style="display: none;">
+                                                    <label class="form-label"><h3>Product Images</h3><p>(Select up to 5 images!)</p></label>
+                                                    <div id="imagesPreview" class="imagesPreview" style="display: flex; justify-content: space-evenly; flex-direction: column; flex-wrap: wrap;">
+                                                        <div style="display: flex; justify-content: space-evenly; flex-direction: row; flex-wrap: wrap;">
+                                                            <% for( let index = 0; index < 5; index++ ) { %>
+                                                                <% if (product.ProductImages[index]) { %>
+                                                                    <img id="<%= `pimg${index+1}` %>" src="http://localhost:5000/images/<%= product.ProductImages[index].name %>" onerror="this.src='../../../public/assets/img/default_product.png'" class="rounded" width="150px" style="object-fit: cover;">                                                         
+                                                                <% } else { %>
+                                                                    <img id="<%= `pimg${index+1}` %>" src="../../../public/assets/img/default_product.png" onerror="this.src='../../../public/assets/img/default_product.png'" class="rounded" width="150px" style="object-fit: cover;">
+                                                                <% }%>
+                                                            <% } %>
+                                                        </div>
+                                                        <br>
+                                                        <input type="file" id="fileInput" name="images" multiple accept="image/*" class="form-control co">
+                                                    </div>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                 <label for="name" class="form-label">Name</label>
                                                 <input type="text" class="form-control co"  name="name" value="<%= product.name %>" autocomplete="off" required>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
-                                                <label for="gender" class="form-label">Category</label>
-                                                <select name="gender" class="form-select co" required>
-                                                        <option value="" disabled selected hidden>Category</option>
-                                                        <!-- <option value="Male" <%# if (user.gender == 'Male') { %> selected<% } %>>Male</option>
-                                                        <option value="Female" <%# if (user.gender == 'Female') { %> selected<% } %>>Female</option> -->
-                                                </select>
+                                                    <label for="category" class="form-label">Category</label>
+                                                    <select name="category_id" class="form-select co" required>
+                                                            <option value="" selected disabled hidden>Category</option>
+                                                            <% categories.forEach(category => { %>
+                                                                <option value="<%= category.id %>" <% if (product.category_id == category.id) { %> selected<% } %>><%= category.name %></option>
+                                                            <% }); %>
+                                                    </select>
                                                 </div>
-                                            </div>
-                                            <div class="row g-2">
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="supplier" class="form-label">Supplier</label>
+                                                    <select name="supplier_id" class="form-select co" required>
+                                                            <option value="" selected disabled hidden>Supplier</option>
+                                                            <% suppliers.forEach(supplier => { %>
+                                                                <option value="<%= supplier.id %>" <% if (product.supplier_id == supplier.id) { %> selected<% } %>><%= supplier.name %></option>
+                                                            <% }); %>
+                                                    </select>
+                                                </div>
                                                 <div class="mb-3 col-md-6">
                                                 <label for="price" class="form-label">Price</label>
-                                                <input type="number" class="form-control co" name="price" value="<%= product.price %>" placeholder="Price" autocomplete="off" required>
+                                                <input type="number" class="form-control co" name="price" value="<%= product.price %>" placeholder="Price" autocomplete="off" step="0.01" required>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                 <label for="quantity" class="form-label">Quantity</label>
                                                 <input type="number" class="form-control co" name="quantity" value="<%= product.quantity %>" placeholder="Quantity" autocomplete="off" required>
                                                 </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="description" class="form-label">Description/Bio</label>
-                                                <textarea type="text" class="form-control co" name="description" cols="30" rows="3" autocomplete="off"><%= product.description %></textarea>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="description" class="form-label">Description/Bio</label>
+                                                    <textarea type="text" class="form-control co" name="description" cols="30" rows="3" autocomplete="off"><%= product.description %></textarea>
+                                                </div>
                                             </div>
                                             <div style="width: 100%; text-align: center;">
                                                 <input class="btn btn-primary" type="submit" value="Update Product">
@@ -92,29 +128,43 @@
             </div>
         </div>
     </div>
+    <%- include('./layouts/danger-alert-modal.ejs') %>
     <script src="../../../public/assets/vendor/jquery/jquery.min.js"></script>
     <script src="../../../public/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../../public/assets/js/form-validator.js"></script>
     <!-- maybe remove the validator in the line above -->
     <script src="../../../public/assets/vendor/jquery/jquery.min.js"></script>
-    <script src="../../../public/assets/vendor/airdatepicker/js/datepicker.min.js"></script>
-    <script src="../../../public/assets/vendor/airdatepicker/js/i18n/datepicker.en.js"></script>
     <script src="../../../public/assets/js/script.js"></script>
     <script>
-        const imagePreview = document.getElementById('imagePreview');
-        const fileInput = document.getElementById('fileInput');
-
-        imagePreview.onclick = () => fileInput.click();
-        fileInput.onchange = (event) => {
-            const selectedFile = event.target.files[0];
-            if (selectedFile) {
-                console.log(selectedFile);
-                let reader = new FileReader();
-                console.log(event.target.result);
-                reader.onload = (event) => imagePreview.setAttribute('src', event.target.result);
-                reader.readAsDataURL(selectedFile);
-
-                console.log(imagePreview.getAttribute('src'));
+        let removedImages = [];
+        let inputFile = document.getElementById('fileInput');
+        inputFile.onchange = (event) => {
+            let selectedFiles = event.target.files;
+            if (selectedFiles.length > 5){
+                let modal = new bootstrap.Modal(document.getElementById("dangerAlertModal"), {});
+                modal.show();
+                document.getElementById('ok').onclick = () => {
+                    inputFile.type = '';
+                    inputFile.type = 'file';
+                    modal.hide();
+                }; 
+            }
+            else if (selectedFiles.length > 0) {
+                for (const key in selectedFiles) {
+                    if(key != 'length' && key != 'item') {
+                        const file = selectedFiles[key];
+                        imageId = `pimg${5-key}`;
+                        mImg = document.getElementById(imageId);
+                        if(mImg.src.includes('productImage')) removedImages.push(mImg.src);
+                        mImg.src = URL.createObjectURL(file);
+                    }
+                }
+                let input = document.createElement("input");
+                input.setAttribute("type", "hidden");
+                input.setAttribute("name", "removedImages");
+                input.setAttribute("value", removedImages);
+                
+                document.getElementById('upForm').appendChild(input);
             }
         };
     </script>

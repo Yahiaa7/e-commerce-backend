@@ -35,7 +35,16 @@
                                     <%= message %>
                                 </div>
                             <% } %>
-                            <% if (error_message) { %>
+                            <% if (Array.isArray(error_message)) { %>
+                                <ul>
+                                    <div class="alert alert-danger" >
+                                        <h5 class="alert-title"><i class="fas fa-exclamation-triangle"></i> Error!</h5>
+                                        <% error_message.forEach(err => { %>
+                                            <li style="margin-left: 30px;"><%= err %></li>
+                                        <% }); %>
+                                    </div>
+                                </ul>
+                            <% } else if (error_message) { %>
                                 <div class="alert alert-danger">
                                     <h5 class="alert-title"><i class="fas fa-exclamation-triangle"></i> Error!</h5>
                                     <%= error_message %>
@@ -49,35 +58,53 @@
                                         <form class="needs-validation" novalidate accept-charset="utf-8" method="post" enctype="multipart/form-data">
                                             <div class="row g-2">
                                                 <div style="width: 100%; text-align: center;" class="mb-3 col-md-6">
-                                                    <img id="imagePreview" src="../../public/assets/img/default_pp.jpg" onerror="this.src='../../public/assets/img/default_pp.jpg'" alt="user picture"  width="150px" height="150px" style=" object-fit: cover; aspect-ratio: 3/4; border-radius: 50%; overflow: hidden; cursor: pointer;" >
-                                                    <input type="file" id="fileInput" name="image" style="display: none;">
+                                                    <!-- <img id="imagePreview" src="../../public/assets/img/default_pp.jpg" onerror="this.src='../../public/assets/img/default_pp.jpg'" alt="user picture"  width="150px" height="150px" style=" object-fit: cover; aspect-ratio: 3/4; border-radius: 50%; overflow: hidden; cursor: pointer;" > -->
+                                                    <label class="form-label"><h3>Product Images</h3><p>(Select up to 5 images!)</p></label>
+                                                    <div id="imagesPreview" class="imagesPreview" style="display: flex; justify-content: space-evenly;">
+                                                        <img id="pimg1" src="../../public/assets/img/default_product.png" onerror="this.src='../../public/assets/img/default_product.png'" alt="product picture 1" class="rounded" width="150px" style="object-fit: cover;">
+                                                        <img id="pimg2" src="../../public/assets/img/default_product.png" onerror="this.src='../../public/assets/img/default_product.png'" alt="product picture 2" class="rounded" width="150px" style="object-fit: cover;">
+                                                        <img id="pimg3" src="../../public/assets/img/default_product.png" onerror="this.src='../../public/assets/img/default_product.png'" alt="product picture 3" class="rounded" width="150px" style="object-fit: cover;">
+                                                        <img id="pimg4" src="../../public/assets/img/default_product.png" onerror="this.src='../../public/assets/img/default_product.png'" alt="product picture 4" class="rounded" width="150px" style="object-fit: cover;">
+                                                        <img id="pimg5" src="../../public/assets/img/default_product.png" onerror="this.src='../../public/assets/img/default_product.png'" alt="product picture 5" class="rounded" width="150px" style="object-fit: cover;">
+                                                    </div>
+                                                    <br>
+                                                    <input type="file" id="fileInput" name="images" multiple accept="image/*" class="form-control co">
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                 <label for="name" class="form-label">Name</label>
                                                 <input type="text" class="form-control co"  name="name" placeholder="Name" autocomplete="off" required>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
-                                                <label for="gender" class="form-label">Category</label>
-                                                <select name="gender" class="form-select co" required>
-                                                        <option value="" selected disabled hidden>Category</option>
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
-                                                </select>
+                                                    <label for="category" class="form-label">Category</label>
+                                                    <select name="category_id" class="form-select co" required>
+                                                            <option value="" selected disabled hidden>Category</option>
+                                                            <% categories.forEach(category => { %>
+                                                                <option value="<%= category.id %>"><%= category.name %></option>
+                                                            <% }); %>
+                                                    </select>
                                                 </div>
-                                            </div>
-                                            <div class="row g-2">
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="supplier" class="form-label">Supplier</label>
+                                                    <select name="supplier_id" class="form-select co" required>
+                                                            <option value="" selected disabled hidden>Supplier</option>
+                                                            <% suppliers.forEach(supplier => { %>
+                                                                <option value="<%= supplier.id %>"><%= supplier.name %></option>
+                                                            <% }); %>
+                                                    </select>
+                                                </div>
+                                            
                                                 <div class="mb-3 col-md-6">
                                                 <label for="price" class="form-label">Price</label>
-                                                <input type="number" class="form-control co" name="price" placeholder="Price" autocomplete="off" required>
+                                                <input type="number" class="form-control co" name="price" placeholder="Price" autocomplete="off" step="0.01" required>
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                 <label for="quantity" class="form-label">Quantity</label>
                                                 <input type="number" class="form-control co" name="quantity" placeholder="Quantity" autocomplete="off" required>
                                                 </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="description" class="form-label">Description</label>
-                                                <textarea type="text" class="form-control co" name="description" placeholder="Bio .." cols="30" rows="3" autocomplete="off"></textarea>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="description" class="form-label">Description</label>
+                                                    <textarea type="text" class="form-control co" name="description" placeholder="Bio .." cols="30" rows="3" autocomplete="off"></textarea>
+                                                </div>
                                             </div>
                                             <div style="width: 100%; text-align: center;">
                                                 <input class="btn btn-primary" type="submit" value="Add Product">
@@ -92,6 +119,7 @@
             </div>
         </div>
     </div>
+    <%- include('./layouts/danger-alert-modal.ejs') %>
     <script src="../../public/assets/vendor/jquery/jquery.min.js"></script>
     <script src="../../public/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../public/assets/js/form-validator.js"></script>
@@ -101,16 +129,24 @@
     <script src="../../public/assets/vendor/airdatepicker/js/i18n/datepicker.en.js"></script>
     <script src="../../public/assets/js/script.js"></script>
     <script>
-        const imagePreview = document.getElementById('imagePreview');
-        const fileInput = document.getElementById('fileInput');
-
-        imagePreview.onclick = () => fileInput.click();
-        fileInput.onchange = (event) => {
-            const selectedFile = event.target.files[0];
-            if (selectedFile) {
-                let reader = new FileReader();
-                reader.onload = (event) => imagePreview.setAttribute('src', event.target.result);
-                reader.readAsDataURL(selectedFile);
+        let inputFile = document.getElementById('fileInput');
+        inputFile.onchange = (event) => {
+            let selectedFiles = event.target.files;
+            if (selectedFiles.length > 5){
+                let modal = new bootstrap.Modal(document.getElementById("dangerAlertModal"), {});
+                modal.show();
+                document.getElementById('ok').onclick = () => {
+                    inputFile.type = '';
+                    inputFile.type = 'file';
+                    modal.hide();
+                }; 
+            }
+            else if (selectedFiles.length > 0) {
+                for (let i = 0; i < selectedFiles.length; i++) {
+                    imageId = `pimg${i+1}`;
+                    mImg = document.getElementById(imageId);
+                    mImg.src = URL.createObjectURL(selectedFiles[i]);
+                }
             }
         };
     </script>

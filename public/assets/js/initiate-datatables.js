@@ -4,9 +4,10 @@
     
     $('#dataTables-example').DataTable({
         responsive: true,
-        pageLength: 20,
+        pageLength: 10,
         lengthChange: true,
-        searching: true,
-        ordering: false
+        searching: false,
+        ordering: false,
+        paging:false
     });
 })();

@@ -52,10 +52,6 @@ module.exports = {
         type: Sequelize.ENUM('Active', 'Pending', 'Inactive'),
         defaultValue: 'Pending'
       },
-      status: {
-        type: DataTypes.ENUM('Active', 'Pending', 'Inactive'),
-        defaultValue: 'Pending'
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
