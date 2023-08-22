@@ -49,7 +49,7 @@ module.exports = {
         defaultValue: 'Pending'
       },
       status: {
-        type: DataTypes.ENUM('Active', 'Pending', 'Inactive'),
+        type: Sequelize.ENUM('Active', 'Pending', 'Inactive'),
         defaultValue: 'Pending'
       },
       createdAt: {

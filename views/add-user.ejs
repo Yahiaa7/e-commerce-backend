@@ -35,7 +35,16 @@
                                     <%= message %>
                                 </div>
                             <% } %>
-                            <% if (error_message) { %>
+                            <% if (Array.isArray(error_message)) { %>
+                                <ul>
+                                    <div class="alert alert-danger" >
+                                        <h5 class="alert-title"><i class="fas fa-exclamation-triangle"></i> Error!</h5>
+                                        <% error_message.forEach(err => { %>
+                                            <li style="margin-left: 30px;"><%= err %></li>
+                                        <% }); %>
+                                    </div>
+                                </ul>
+                            <% } else if (error_message) { %>
                                 <div class="alert alert-danger">
                                     <h5 class="alert-title"><i class="fas fa-exclamation-triangle"></i> Error!</h5>
                                     <%= error_message %>
@@ -89,7 +98,7 @@
                                             <div class="row g-2">
                                                 <div class="mb-3 col-md-6">
                                                     <label for="birthday" class="form-label">Birthday</label>
-                                                    <input type="text"  name="birthday" class="form-control co datepicker-here" data-language="en" autocomplete="off" aria-describedby="datepicker" placeholder="Birthday">
+                                                    <input type="text"  name="birthday" readonly class="form-control co datepicker-here" data-language="en" autocomplete="off" aria-describedby="datepicker" placeholder="Birthday">
                                                     <!-- <input type="date" class="form-control co" name="birthday" placeholder="Birthday"> -->
                                                 </div>
                                                 <div class="mb-3 col-md-3">

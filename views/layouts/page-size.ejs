@@ -1,0 +1,12 @@
+<div class="mb-3 col-md-2">
+    <select onchange="setItemCount(this.value, '<%= page %>')" class="form-select" style="text-align: center;">
+        <option value="5" <% if (pageSize == 5) { %> selected <% } %> >Show 5 Items</option>
+        <option value="10" <% if (pageSize == 10) { %> selected <% } %>>Show 10 Items</option>
+        <option value="15" <% if (pageSize == 15) { %> selected <% } %>>Show 15 Items</option>
+    </select>
+</div>
+
+<script>
+    setItemCount = (newPageSize, pageNumber) => 
+        window.location.href = `?page=${pageNumber}&pageSize=${newPageSize}`;
+</script>

@@ -41,6 +41,21 @@
                                     <%= message %>
                                 </div>
                             <% } %>
+                            <% if (Array.isArray(error_message)) { %>
+                                <ul>
+                                    <div class="alert alert-danger" >
+                                        <h5 class="alert-title"><i class="fas fa-exclamation-triangle"></i> Error!</h5>
+                                        <% error_message.forEach(err => { %>
+                                            <li style="margin-left: 30px;"><%= err %></li>
+                                        <% }); %>
+                                    </div>
+                                </ul>
+                            <% } else if (error_message) { %>
+                                <div class="alert alert-danger">
+                                    <h5 class="alert-title"><i class="fas fa-exclamation-triangle"></i> Error!</h5>
+                                    <%= error_message %>
+                                </div>
+                            <% } %>
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-header">User Data</div>
@@ -92,7 +107,7 @@
                                                 <div class="mb-3 col-md-6">
                                                     <label for="role" class="form-label">Role</label>
                                                     <select name="role" class="form-select co" required>
-                                                        <option value=""disabled selected hidden>Role</option>
+                                                        <option value="" disabled selected hidden>Role</option>
                                                         <option value="Admin" <% if (user.role == 'Admin') { %> selected<% } %>>Admin</option>
                                                         <option value="Store Manager" <% if (user.role == 'Store Manager') { %> selected<% } %>>Store Manager</option>
                                                         <option value="Advertising Manager" <% if (user.role == 'Advertising Manager') { %> selected<% } %>>Advertising Manager</option>

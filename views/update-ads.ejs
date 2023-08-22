@@ -1,0 +1,132 @@
+<!doctype html>
+<!-- 
+* Bootstrap Simple Admin Template
+* Version: 2.1
+* Author: Alexis Luna
+* Website: https://github.com/alexis-luna/bootstrap-simple-admin-template
+-->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Update Advertisement</title>
+    <link href="../../../public/assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../public/assets/css/master.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/airdatepicker/css/datepicker.min.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/mdtimepicker/mdtimepicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css"/>
+</head>
+<style>
+    .co{
+        background-color: #f0f0f0;
+    }
+</style>
+<body>
+    <div class="wrapper">
+        <%- include('./layouts/nav-1.ejs') -%>
+        <div id="body" class="active">
+            <%- include('./layouts/nav-2.ejs') -%>
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="page-title">
+                        <div class="container">
+                            <h3>Update Advertisement</h3>
+                            <% if (message) { %>
+                                <div class="alert alert-success">
+                                    <h4 class="alert-title"><i class="fas fa-check"></i> Success</h4>
+                                    <%= message %>
+                                </div>
+                            <% } %>
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">Advertisement Data</div>
+                                    <div class="card-body" >
+                                        <!-- style="background-color: #f0f0f0;" -->
+                                        <form class="needs-validation" novalidate accept-charset="utf-8" method="post">
+                                            <div class="row g-2">
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="product_id" class="form-label">Product</label>
+                                                    <select onchange="productSelect(this.value, '<%= JSON.stringify(products) %>')" name="product_id" class="form-select choices-single" required>
+                                                        <option value="" selected disabled hidden>Product</option>
+                                                        <% products.forEach(product => { %>
+                                                            <option value="<%= product.id %>" <% if (product.id === ads.product_id) { %> selected <%}%>> <%= product.name %></option>
+                                                        <% }) %>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="oldPrice" class="form-label">Old Price</label>
+                                                    <input type="number" id="old_price" readonly value="<%= ads.Product.price %>" class="form-control co" name="currentPrice" placeholder="Current Price" autocomplete="off">
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="newPrice" class="form-label">New Price</label>
+                                                    <input type="number" class="form-control co"  name="newPrice" value="<%= ads.newPrice %>" placeholder="New Price" autocomplete="off" required>
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="status" class="form-label">Status</label>
+                                                    <select name="status" class="form-select co" required>
+                                                        <option value="" selected disabled hidden>Status</option>
+                                                        <option value="Active" <% if (ads.status === 'Active') { %> selected <%}%>>Active</option>
+                                                        <option value="Inactive" <% if (ads.status === 'Inactive') { %> selected <%}%>>Inactive</option>
+                                                        <option value="Expired" <% if (ads.status === 'Expired') { %> selected <%}%>>Expired</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="fromDate" class="form-label">From Date</label>
+                                                    <input type="text" name="fromDate" id="fromDate" value="<%= ads.fromDate %>" class="form-control co datepicker-here" data-language="en" autocomplete="off" aria-describedby="datepicker" placeholder="From Date" required>
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label for="toDate" class="form-label">To Date</label>
+                                                    <input type="text" name="toDate" id="toDate" value="<%= ads.toDate %>" class="form-control co datepicker-here" data-language="en" autocomplete="off" aria-describedby="datepicker" placeholder="ToDate" required>
+                                                </div>
+                                            </div>
+                                            <div style="width: 100%; text-align: center;">
+                                                <input class="btn btn-primary" type="submit" value="Update Advertisement">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script  src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
+    <script src="../../../public/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../../public/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../public/assets/js/form-validator.js"></script>
+    <!-- maybe remove the validator in the line above -->
+    <script src="../../../public/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../../public/assets/vendor/airdatepicker/js/datepicker.min.js"></script>
+    <script src="../../../public/assets/vendor/airdatepicker/js/i18n/datepicker.en.js"></script>
+    <script src="../../../public/assets/js/script.js"></script>
+    <script>
+        new Choices(document.querySelector(".choices-single"));
+
+        $("#fromDate").on('keydown paste focus', function(e){
+            if(e.keyCode != 9) // ignore tab
+                e.preventDefault();
+        });
+
+        $("#toDate").on('keydown paste focus', function(e){
+            if(e.keyCode != 9) // ignore tab
+                e.preventDefault();
+        });
+
+        function productSelect(value, products) {
+            document.getElementById('old_price').value = 
+                JSON.parse(products).find(product => product.id === parseInt(value, 10))?.price;
+
+            console.log(value);
+        }
+        
+    </script>
+</body>
+
+</html>

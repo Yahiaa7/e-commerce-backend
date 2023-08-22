@@ -1,0 +1,107 @@
+<!doctype html>
+<!-- 
+* Bootstrap Simple Admin Template
+* Version: 2.1
+* Author: Alexis Luna
+* Website: https://github.com/alexis-luna/bootstrap-simple-admin-template
+-->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Update Monthly Expenses</title>
+    <link href="../../../public/assets/vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/fontawesome/css/solid.min.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/fontawesome/css/brands.min.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../public/assets/css/master.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/airdatepicker/css/datepicker.min.css" rel="stylesheet">
+    <link href="../../../public/assets/vendor/mdtimepicker/mdtimepicker.min.css" rel="stylesheet">
+</head>
+<style>
+    .co{
+        background-color: #f0f0f0;
+    }
+</style>
+<body>
+    <div class="wrapper">
+        <%- include('./layouts/nav-1.ejs') -%>
+        <div id="body" class="active">
+            <%- include('./layouts/nav-2.ejs') -%>
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="page-title">
+                        <div class="container">
+                            <h3>Update Monthly Expenses</h3>
+                            <% if (message) { %>
+                                <div class="alert alert-success">
+                                    <h4 class="alert-title"><i class="fas fa-check"></i> Success</h4>
+                                    <%= message %>
+                                </div>
+                            <% } else if (Array.isArray(error_message)) { %>
+                                <ul>
+                                    <div class="alert alert-danger" >
+                                        <h5 class="alert-title"><i class="fas fa-exclamation-triangle"></i> Error!</h5>
+                                        <% error_message.forEach(err => { %>
+                                            <li style="margin-left: 30px;"><%= err %></li>
+                                        <% }); %>
+                                    </div>
+                                </ul>
+                            <% } else if (error_message) { %>
+                                <div class="alert alert-danger">
+                                    <h5 class="alert-title"><i class="fas fa-exclamation-triangle"></i> Error!</h5>
+                                    <%= error_message %>
+                                </div>
+                            <% } %>
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">Monthly Expenses Data</div>
+                                    <div class="card-body" >
+                                        <!-- style="background-color: #f0f0f0;" -->
+                                        <form class="needs-validation" novalidate accept-charset="utf-8" method="post">
+                                            <div class="row g-2">
+                                                <div class="mb-3 col-md-12">
+                                                    <label for="name" class="form-label">Name</label>
+                                                    <input type="text" class="form-control co"  name="name" value="<%= me.name %>" autocomplete="off" required>
+                                                </div>
+                                                <div class="mb-3 col-md-12">
+                                                    <label for="price" class="form-label">Price</label>
+                                                    <input type="text" class="form-control co"  name="price" value="<%= me.price %>" autocomplete="off" required>
+                                                </div>
+                                                <div class="mb-3 col-md-12">
+                                                    <label for="date" class="form-label">Date</label>
+                                                    <input type="text" id="date" name="date" readonly value="<%= me.date %>" class="form-control co datepicker-here" data-language="en" autocomplete="off" aria-describedby="datepicker" placeholder="Date" required>
+                                                </div>
+                                            </div>
+                                            <div style="width: 100%; text-align: center;">
+                                                <input class="btn btn-primary" type="submit" value="Update Monthly Expenses">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../../public/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../../public/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../public/assets/js/form-validator.js"></script>
+    <!-- maybe remove the validator in the line above -->
+    <script src="../../../public/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../../../public/assets/vendor/airdatepicker/js/datepicker.min.js"></script>
+    <script src="../../../public/assets/vendor/airdatepicker/js/i18n/datepicker.en.js"></script>
+    <script src="../../../public/assets/js/script.js"></script>
+    <script>
+        $("#date").on('keydown paste focus mousedown', function(e){
+            if(e.keyCode != 9) // ignore tab
+                e.preventDefault();
+        });
+    </script>
+</body>
+
+</html>

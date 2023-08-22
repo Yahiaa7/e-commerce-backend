@@ -10,7 +10,7 @@ module.exports = {
           {
             type: Sequelize.DataTypes.INTEGER,
             references: { model: 'Products', key: 'id' },
-            onUpdate: 'CASCADE', onDelete: 'SET NULL'
+            onUpdate: 'CASCADE', onDelete: 'CASCADE' // 'SET NULL'
           }, { transaction: t }
         ),
         // Product hasMany Advertisement
@@ -18,7 +18,7 @@ module.exports = {
           {
             type: Sequelize.DataTypes.INTEGER,
             references: { model: 'Products', key: 'id' },
-            onUpdate: 'CASCADE', onDelete: 'SET NULL'
+            onUpdate: 'CASCADE', onDelete: 'CASCADE' // 'SET NULL'
           }, { transaction: t }
         ),
         // Product hasMany ProductImages
@@ -26,7 +26,7 @@ module.exports = {
           {
             type: Sequelize.DataTypes.INTEGER,
             references: { model: 'Products', key: 'id' },
-            onUpdate: 'CASCADE', onDelete: 'SET NULL'
+            onUpdate: 'CASCADE', onDelete: 'CASCADE' // 'SET NULL'
           }, { transaction: t }
         ),
         // Product hasMany ProductRatings
@@ -34,7 +34,7 @@ module.exports = {
           {
             type: Sequelize.DataTypes.INTEGER,
             references: { model: 'Products', key: 'id' },
-            onUpdate: 'CASCADE', onDelete: 'SET NULL'
+            onUpdate: 'CASCADE', onDelete: 'CASCADE' // 'SET NULL'
           }, { transaction: t }
         ),
       ]);

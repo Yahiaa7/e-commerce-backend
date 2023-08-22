@@ -35,6 +35,7 @@
                     </div>
                     <div class="box box-primary">
                         <div class="box-body">
+                            <%- include('./layouts/page-size.ejs') %>
                             <table width="100%" class="table table-hover" id="dataTables-example">
                                 <thead>
                                     <tr>
@@ -54,13 +55,14 @@
                                             <td><%= product.description %></td>
                                             <td class="text-end">
                                                 <a href="/dashboard/products/<%= product.id %>" class="btn btn-outline-primary btn-rounded"><i class="fas fa-user"></i></a>
-                                                <a href="/dashboard/products/update/<%= user.id %>" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
+                                                <a href="/dashboard/products/update/<%= product.id %>" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
                                                 <a href="#" id="deleteBtn" onclick="return confirmDelete('<%= product.id %>')" class="btn btn-outline-danger btn-rounded"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
                                     <% }); %>
                                 </tbody>
                             </table>
+                            <%- include('./layouts/pagination.ejs') %>
                         </div>
                     </div>
                 </div>
@@ -85,6 +87,8 @@
                 }
                 return true;
         }
+
+        
     </script>
 </body>
 </html>
