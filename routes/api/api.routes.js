@@ -16,6 +16,9 @@ app.use('/categories', require('./category.routes'));
 // Products Routes
 app.use('/products', require('./product.routes'));
 
+// Invoices Routes
+app.use('/invoices', require('./invoice.routes'));
+
 // for any other route, that is not handled!
 app.use('*', (req, res) => res.status(404).json({ message: 'Page Not Found!' }));
 

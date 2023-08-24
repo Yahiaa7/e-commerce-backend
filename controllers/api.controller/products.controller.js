@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator');
-const { Product, Category, Advertisement, Sequelize, Op } = require('../../models');
+const { User, Product, ProductRatings, Category, Advertisement, Invoice, InvoiceItem, Sequelize, Op } = require('../../models');
 const { responseSuccess, responseFailed } = require("../../utils/responseReturn");
 const moment = require('moment');
 
@@ -15,7 +15,7 @@ exports.getProducts = async (req, res) => {
         // const pageSize = parseInt(req.query.pageSize, 10) || 10;
 
         const products = await Product.findAndCountAll(queryOptions(req.query, page, pageSize));
-        
+
         return responseSuccess(res, 200, {
             page,
             pageSize: pageSize,
@@ -37,7 +37,7 @@ const queryOptions = (queryParams, page, pageSize) => {
     const { query, cat, ads, minPrice, maxPrice } = queryParams;
 
     const options = {
-        where: {},
+        where: { quantity: { [Op.gt]: 0 }, },
         include: [{ model: Category, attributes: ['name'], required: true },],
         subQuery: false,
         offset: (page - 1) * pageSize,
@@ -63,4 +63,75 @@ const queryOptions = (queryParams, page, pageSize) => {
     }
     // if (minPrice && maxPrice) options.where.price = { [Op.between]: [minPrice, maxPrice] }; 
     return options;
+};
+
+exports.rateProduct = async (req, res) => {
+    try {
+        const product = await Product.findByPk(req.body.product_id);
+        if (!product) return responseFailed(res, 404, { error_message: 'Product not found!' });
+        const user = await User.findByPk(req.tokenInfo.id);
+        let rate = await ProductRatings.findOne({ where: { user_id: user.id, product_id: product.id } });
+        if (rate) return responseFailed(res, 401, { error_message: 'You can only rate the same product once!' });
+        rate = await user.createProductRating(req.body);
+        return responseSuccess(res, 200, { rate }, 'Rate added Successfully!');
+    } catch (err) {
+        if (err instanceof Sequelize.Error) return responseFailed(res, 400, {
+            error_message: 'Error validation your data!',
+            error: err.message
+        });
+        else return responseFailed(res, 500, {
+            error_message: 'Internal error, please try again later!',
+            error: err.message
+        });
+    }
+};
+
+exports.buyProduct = async (req, res) => {
+    try {
+        const { name, data } = req.body;
+        const productsIds = data.map(obj => obj.product_id);
+        // check if all products from req.body exists
+        const products = await Product.findAll({ where: { id: productsIds } });
+        // return error if not all products exists
+        if (products.length != productsIds.length) return responseFailed(res, 401, {
+            error_message: 'Please provide a valid products!'
+        });
+        // check if there is enough quantity for each product
+        const isValid = data.every(obj =>
+            products.some(product => product.id === obj.product_id && obj.quantity <= product.quantity)
+        );
+        // return error if any of the quantities is more than what actually exists
+        if (!isValid) return responseFailed(res, 400, {
+            error_message: 'Error, some of the needed products quantities is insufficient'
+        });
+        const user = await User.findByPk(req.tokenInfo.id);
+        const mInvoice = await user.createInvoice({ name, date: moment().format('YYYY-MM-DD') });
+        // console.log(Object.keys(user.__proto__));
+
+        await Promise.all(data.map(async (invoiceItem) => {
+            // find the corresponding product
+            const product = products.find(product => product.id === invoiceItem.product_id);
+            // calculate subtotal
+            invoiceItem.subtotal = product.price * invoiceItem.quantity;
+            // create invoiceItem
+            await mInvoice.createInvoiceItem(invoiceItem, { Product });
+            // update products quantity
+            // await product.set({ quantity: product.quantity - invoiceItem.quantity });
+            await product.decrement({ quantity: invoiceItem.quantity });
+            await product.save();
+        }));
+
+        mInvoice.dataValues.InvoiceItems = await mInvoice.getInvoiceItems();
+
+        return responseSuccess(res, 200, { mInvoice }, 'Nice!');
+    } catch (err) {
+        if (err instanceof Sequelize.Error) return responseFailed(res, 400, {
+            error_message: 'Error validation your data!',
+            error: err.message
+        });
+        else return responseFailed(res, 500, {
+            error_message: 'Internal error, please try again later!',
+            error: err.message
+        });
+    }
 };
