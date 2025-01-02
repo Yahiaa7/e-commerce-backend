@@ -16,6 +16,6 @@ This project is a robust backend system for an e-commerce platform, designed usi
 * Password hashing and secure authentication.
 * Input validation and data encryption.
 ### Database Design
-The database is designed with normalization principles and includes the following key entities showed in the following ERD:
+The database is designed with normalization principles view the following ERD for all details:
 
 ![E-Commerce ERD](https://github.com/user-attachments/assets/c03d9143-e8b9-48c3-9b50-5952b992beda)
