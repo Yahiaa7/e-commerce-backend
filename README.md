@@ -1,4 +1,4 @@
-
+- [API Documentation](APIDOCS.md)
 # E-Commerce Backend API with Node.js and MySQL
 
 This project is a robust backend system for an e-commerce platform, designed using Node.js and Express.js, and powered by a MySQL database. It provides a seamless experience for managing users, products, categories, suppliers, advertisements, invoices, and monthly expenses. The backend includes role-based access control (RBAC), secure authentication mechanisms, and a comprehensive API for both the admin dashboard and the client-facing application.
