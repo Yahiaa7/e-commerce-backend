@@ -1,3 +1,5 @@
+# API Documentation
+
 here is the list of the User types with their corresponding premissions:
 ### Permissions Table
 | Role                	| Access Area   | Permissions                                                                                  |
