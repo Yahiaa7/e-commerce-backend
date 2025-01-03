@@ -28,6 +28,44 @@ The database is designed with normalization principles, view the following ERD f
 * **Sequelize:** ORM for database migrations and interactions.
 * **JWT:** For secure token-based authentication.
 * **bcrypt:** For password hashing.
+## Installation
 
+Install the E-Commerce Project as follows:
+
+* do clone the repo using the following command:
+```bash
+git clone https://github.com/your-repo/e-commerce-backend.git
+cd e-commerce-backend
+```
+* Install dependencies:
+```bash
+npm install
+```
+Create a ```.env``` file and configure the following environment variables:
+
+```bash
+# hsot and port
+HOST=http://localhost:5000
+PORT=5000
+
+# DB connection info
+DB_HOST=''
+DB_USERNAME=''
+DB_PASSWORD=''
+DB_NAME='e_commerce'
+
+# Cookie Secret key
+CK = ''
+# Session Secret key
+SK = ''
+
+# Use openSSL for key generation or you can generate them in a .pem files
+# JWT key pairs
+PDK = ``        # JWT public Decryption Key
+PEK = ``        # JWT prvate Encryption Key
+REFRESH_PEK=``  # Refresh Private Encryption Key
+REFRESH_PDK=``  # Refresh JWT Public Decryption Key
+```
+    
 ## API Documentation
 please view the - [API Documentation](APIDOCS.md)
