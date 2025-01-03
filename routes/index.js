@@ -44,6 +44,6 @@ app.use(
 app.use('/dashboard', require('./dashboard/dashboard.routes'));
 
 // for any other route, that is not handled!
-app.use('*', (req, res) => res.status(404).json({ message: 'Page Not Found!' }));
+app.all('*', (req, res) => res.status(404).json({ message: 'Page Not Found!' }));
 
 module.exports = app;

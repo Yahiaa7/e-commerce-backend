@@ -90,7 +90,7 @@ exports.refreshToken = async (req, res) => {
     }
 };
 
-exports.logout = async (req, res) => {
+exports.signout = async (req, res) => {
     try {
         const { token, exp } = req.tokenInfo;
         const tokenRemainingTime = parseInt((exp * 1000 - Date.now()) / 1000, 10);
@@ -103,7 +103,7 @@ exports.logout = async (req, res) => {
         //     signed: true,
         //     overwrite: true
         // });
-        return responseSuccess(res, 200, {}, 'Logged out successfully :)');
+        return responseSuccess(res, 200, {}, 'Signed out successfully :)');
     } catch (err) {
         return responseFailed(res, 500, {
             error_message: "Internal Error, Could't process your request! >_<",

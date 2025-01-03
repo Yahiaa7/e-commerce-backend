@@ -2,7 +2,7 @@ const app = require('express').Router();
 const { apiMiddleware: { authMiddleware, usersMiddleware } } = require('../../middleware');
 const { apiController: { authController } } = require('../../controllers');
 
-app.post('/signUp',
+app.post('/signup',
     [
         usersMiddleware.imageUploadUser,
         usersMiddleware.validateUser
@@ -10,6 +10,6 @@ app.post('/signUp',
     authController.signUp);
 app.post('/signIn', authController.signIn);
 app.post('/refreshToken', authMiddleware.authenticateRefreshToken, authController.refreshToken);
-app.post('/logout', authMiddleware.authenticateJWT, authController.logout);
+app.post('/signout', authMiddleware.authenticateJWT, authController.signout);
 
 module.exports = app;
