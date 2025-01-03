@@ -1,4 +1,3 @@
-- [API Documentation](APIDOCS.md)
 # E-Commerce Backend API with Node.js and MySQL
 
 This project is a robust backend system for an e-commerce platform, designed using Node.js and Express.js, and powered by a MySQL database. It provides a seamless experience for managing users, products, categories, suppliers, advertisements, invoices, and monthly expenses. The backend includes role-based access control (RBAC), secure authentication mechanisms, and a comprehensive API for both the admin dashboard and the client-facing application.
@@ -31,26 +30,4 @@ The database is designed with normalization principles, view the following ERD f
 * **bcrypt:** For password hashing.
 
 ## API Documentation
-### API Routes
-![image](https://github.com/user-attachments/assets/0196efc0-1d24-4e62-bfb0-799a7745e563)
-### Dashboard Routes
-### Dashboard Routes Table
-| Route                              | Description                                                                                  |
-|------------------------------------|----------------------------------------------------------------------------------------------|
-| `/dashboard/`                      | Returns the dashboard home page.                                                             |
-| `/dashboard/auth/login`            | Login page for dashboard access.                                                             |
-| `/dashboard/auth/logout`           | Logout functionality for the dashboard.                                                      |
-| `/dashboard/users`                 | View all users (Admin only).                                                                 |
-| `/dashboard/users/add`             | Add a new user (Admin only).                                                                 |
-| `/dashboard/users/:id`             | View a specific user (Admin only).                                                           |
-| `/dashboard/users/update/:id`      | Update a specific user's information (Admin only).                                           |
-| `/dashboard/users/setStatus/:id`   | Set the status of a user (Admin only).                                                       |
-| `/dashboard/users/delete/:id`      | Delete a user (Admin only).                                                                  |
-| `/dashboard/suppliers`             | Manage suppliers (Admin & Store Manager only).                                               |
-| `/dashboard/categories`            | Manage categories (Admin & Store Manager only).                                              |
-| `/dashboard/products`              | Manage products (Admin & Store Manager only).                                                |
-| `/dashboard/ads`                   | Manage advertisements (Admin, Store Manager & Advertising Manager).                          |
-| `/dashboard/me`                    | Manage monthly expenses (Admin, Store Manager only).                                         |
-| `/dashboard/404`                   | Custom 404 page for invalid dashboard routes.                                                |
-
-
+please view the - [API Documentation](APIDOCS.md)
