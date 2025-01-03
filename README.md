@@ -32,7 +32,7 @@ The database is designed with normalization principles, view the following ERD f
 
 Install the E-Commerce Project as follows:
 
-* do clone the repo using the following command:
+* Clone the repo using the following command:
 ```bash
 git clone https://github.com/your-repo/e-commerce-backend.git
 cd e-commerce-backend
