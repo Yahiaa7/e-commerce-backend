@@ -59,12 +59,12 @@ CK = ''
 # Session Secret key
 SK = ''
 
-# Use openSSL for key generation or you can generate them in a .pem files
 # JWT key pairs
+# Use openSSL for key generation or you can generate them in a .pem files
 PDK = ``        # JWT public Decryption Key
-PEK = ``        # JWT prvate Encryption Key
-REFRESH_PEK=``  # Refresh Private Encryption Key
+PEK = ``        # JWT private Encryption Key
 REFRESH_PDK=``  # Refresh JWT Public Decryption Key
+REFRESH_PEK=``  # Refresh JWT Private Encryption Key
 ```
     
 ## API Documentation
