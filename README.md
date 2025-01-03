@@ -68,4 +68,4 @@ REFRESH_PEK=``  # Refresh JWT Private Encryption Key
 ```
     
 ## API Documentation
-please view the - [API Documentation](APIDOCS.md)
+please view the [API Documentation](APIDOCS.md) page.
