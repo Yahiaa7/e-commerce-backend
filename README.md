@@ -41,7 +41,7 @@ cd e-commerce-backend
 ```bash
 npm install
 ```
-Create a ```.env``` file and configure the following environment variables:
+* Create a ```.env``` file and configure the following environment variables:
 
 ```bash
 # hsot and port
@@ -66,6 +66,17 @@ PEK = ``        # JWT private Encryption Key
 REFRESH_PDK=``  # Refresh JWT Public Decryption Key
 REFRESH_PEK=``  # Refresh JWT Private Encryption Key
 ```
+* Run database migrations:
+```bash
+npx sequelize-cli db:migrate
+```
+
+* run the server:
+```bash
+node server.js
+```
+The server will run on ```http://localhost:5000```.
+
     
 ## API Documentation
 please view the [API Documentation](APIDOCS.md) page.
