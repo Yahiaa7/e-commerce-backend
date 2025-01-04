@@ -41,6 +41,7 @@ cd e-commerce-backend
 ```bash
 npm install
 ```
+make sure to have **Redis** installed in your system.
 * Create a ```.env``` file and configure the following environment variables:
 
 ```bash
