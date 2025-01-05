@@ -34,7 +34,7 @@ Install the E-Commerce Project as follows:
 
 * Clone the repo using the following command:
 ```bash
-git clone https://github.com/your-repo/e-commerce-backend.git
+git clone https://github.com/Yahiaa7/e-commerce-backend.git
 cd e-commerce-backend
 ```
 * Install dependencies:
