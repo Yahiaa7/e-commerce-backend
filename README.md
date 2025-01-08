@@ -41,7 +41,7 @@ cd e-commerce-backend
 ```bash
 npm install
 ```
-Create a ```.env``` file and configure the following environment variables:
+* Create a ```.env``` file and configure the following environment variables:
 
 ```bash
 # hsot and port
@@ -66,6 +66,30 @@ PEK = ``        # JWT private Encryption Key
 REFRESH_PDK=``  # Refresh JWT Public Decryption Key
 REFRESH_PEK=``  # Refresh JWT Private Encryption Key
 ```
+
+### Steps for Generating Keys for JWT Auth using openSSL
+
+make sure to have openSSL installed on your system.
+
+now open a folder name it whatever you please, and open the Terminal or CMD inside it.
+
+* Generate the private key:
+```bash
+openssl genpkey -algorithm RSA -out private.pem -pkeyopt rsa_keygen_bits:4096
+``` 
+
+* Now generate the public key from the private one:
+```bash
+openssl rsa -pubout -in private.pem -out public.pem
+```
+Now you will have two .pem files, one contains the private key and the other for the public one.
+
+You can add the keys into your .env file as i did and showed in the .env variables to be initialized.
+
+Make sure your .env file is added into your .gitignore file, or add the two .pem files into .gitignore.
+
+**NOTE**: Never share the private key to anyone.
+
     
 ## API Documentation
 please view the - [API Documentation](APIDOCS.md)
