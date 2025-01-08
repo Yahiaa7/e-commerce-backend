@@ -50,8 +50,8 @@ exports.signIn = async (req, res) => {
         if (user.status == 'Inactive') return responseFailed(res, 403, {
             error_message: "Forbidden, your account has been disabled by the admin! >_<"
         });
-        const token = sign({ id: user.id, role: user.role }, process.env.PEK, { algorithm: 'RS256', expiresIn: '12h' });
-        const refreshToken = sign({ id: user.id }, process.env.REFRESH_PEK, { algorithm: 'RS256', expiresIn: '7 days' });
+        const token = sign({ id: user.id, role: user.role }, process.env.PEK, { algorithm: 'RS512', expiresIn: '12h' });
+        const refreshToken = sign({ id: user.id }, process.env.REFRESH_PEK, { algorithm: 'RS512', expiresIn: '7 days' });
         // res.cookie('refreshToken', refreshToken, {
         //     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         //     httpOnly: true,
@@ -74,11 +74,11 @@ exports.refreshToken = async (req, res) => {
     // implement a separate token for the refresh and another to authenticate 
     try {
         let { refreshToken, id, exp } = req.tokenInfo;
-        let newRefreshToken = sign({ id }, process.env.REFRESH_PEK, { algorithm: 'RS256', expiresIn: '7 days' });
+        let newRefreshToken = sign({ id }, process.env.REFRESH_PEK, { algorithm: 'RS512', expiresIn: '7 days' });
         let { role } = await User.findByPk(id);
         console.log(role);
         const payload = role ? { id, role } : { id };
-        let newToken = sign(payload, process.env.PEK, { algorithm: 'RS256', expiresIn: 10 });
+        let newToken = sign(payload, process.env.PEK, { algorithm: 'RS512', expiresIn: 10 });
         const tokenRemainingTime = parseInt((exp * 1000 - Date.now()) / 1000, 10);
         await redisClient.set(refreshToken, "blacklisted", 'EX', tokenRemainingTime);
         return responseSuccess(res, 201, { newToken, newRefreshToken }, 'Token refreshed successfully! :)');

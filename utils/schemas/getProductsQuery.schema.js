@@ -1,6 +1,7 @@
 const { checkSchema } = require('express-validator');
 
 
+// validating incoming quires to formatted corrected
 exports.getProductsSchema = checkSchema({
     query: {
         in: 'query',

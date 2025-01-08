@@ -3,7 +3,7 @@ const session = require('express-session');
 const express = require('express');
 const app = express.Router();
 
-// for viewing images thought the server
+// for viewing images through the server
 app.use(
     '/images',
     express.static('public/images/users'),

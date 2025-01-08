@@ -4,6 +4,7 @@ const { apiMiddleware:
         authMiddleware: { authenticateJWT, isAdmin } } } = require('../../middleware');
 const { apiController: { usersController } } = require('../../controllers');
 
+// Linking routes with middlewares and controllers
 // get all users
 app.get('/', [authenticateJWT, isAdmin], usersController.getAllUsers);
 // get single user by id
@@ -13,6 +14,5 @@ app.put('/:id', [authenticateJWT, isAdmin, usersMiddleware.imageUploadUser], use
 // delete user by id
 app.delete('/:id', [authenticateJWT, isAdmin], usersController.deleteUser);
 
-// app.route('/').get().post().put().delete();
 
 module.exports = app;

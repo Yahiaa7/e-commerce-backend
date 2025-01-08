@@ -1,5 +1,6 @@
 const app = require('express').Router();
 
+// a test route to test our application
 app.get('/test', (req, res) => {
     res.status(200).send('Works :)');
 });
