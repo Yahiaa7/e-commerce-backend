@@ -34,13 +34,14 @@ Install the E-Commerce Project as follows:
 
 * Clone the repo using the following command:
 ```bash
-git clone https://github.com/your-repo/e-commerce-backend.git
+git clone https://github.com/Yahiaa7/e-commerce-backend.git
 cd e-commerce-backend
 ```
 * Install dependencies:
 ```bash
 npm install
 ```
+make sure to have **Redis** installed in your system.
 * Create a ```.env``` file and configure the following environment variables:
 
 ```bash
@@ -90,6 +91,17 @@ Make sure your .env file is added into your .gitignore file, or add the two .pem
 
 **NOTE**: Never share the private key to anyone.
 
+* Run database migrations:
+```bash
+npx sequelize-cli db:migrate
+```
+
+* run the server:
+```bash
+node server.js
+```
+The server will run on ```http://localhost:5000```.
+
     
 ## API Documentation
-please view the - [API Documentation](APIDOCS.md)
+please view the [API Documentation](APIDOCS.md) page.
