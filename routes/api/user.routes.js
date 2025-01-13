@@ -1,18 +1,18 @@
 const app = require('express').Router();
 const { apiMiddleware:
     { usersMiddleware,
-        authMiddleware: { authenticateJWT, isAdmin } } } = require('../../middleware');
+        authMiddleware: { authenticateJWT, hasAccess, isAdmin } } } = require('../../middleware');
 const { apiController: { usersController } } = require('../../controllers');
 
 // Linking routes with middlewares and controllers
 // get all users
-app.get('/', [authenticateJWT, isAdmin], usersController.getAllUsers);
+app.get('/', [authenticateJWT, hasAccess(isAdmin)], usersController.getAllUsers);
 // get single user by id
-app.get('/:id', [authenticateJWT, isAdmin], usersController.getUser);
+app.get('/:id', [authenticateJWT, hasAccess(isAdmin)], usersController.getUser);
 // update user by id
-app.put('/:id', [authenticateJWT, isAdmin, usersMiddleware.imageUploadUser], usersController.updateUser);
+app.put('/:id', [authenticateJWT, hasAccess(isAdmin), usersMiddleware.imageUploadUser], usersController.updateUser);
 // delete user by id
-app.delete('/:id', [authenticateJWT, isAdmin], usersController.deleteUser);
+app.delete('/:id', [authenticateJWT, hasAccess(isAdmin)], usersController.deleteUser);
 
 
 module.exports = app;

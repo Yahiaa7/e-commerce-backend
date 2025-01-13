@@ -1,3 +1,4 @@
+// checking if a user is logged in using using session information
 exports.isLoggedIn = (req, res, next) => {
     if (!req.session?.isLoggedIn) return res.redirect('/dashboard/auth/login');
     else return next();
@@ -34,6 +35,6 @@ exports.isAdvertisingManager = (role) => role === 'Advertising Manager'
 exports.isUser = (role) => role === 'User';
 
 exports.hasAccess = (...allowedRoles) => (req, res, next) => {
-    const isAllowed = allowedRoles[0].some(roleF => roleF(req.session.role));
+    const isAllowed = allowedRoles.some(roleF => roleF(req.session.role));
     isAllowed ? next() : res.redirect('/dashboard/403');
 };

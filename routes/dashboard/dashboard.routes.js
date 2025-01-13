@@ -16,42 +16,42 @@ app.get('/', homeController.getHome);
 
 // Users CRUD routes
 app.use('/users',
-    authMiddleware.hasAccess([authMiddleware.isAdmin]),
+    authMiddleware.hasAccess(authMiddleware.isAdmin),
     require('./users.routes.js')
 );
 
 // Suppliers CRUD routes
 app.use('/suppliers',
     authMiddleware.hasAccess(
-        [authMiddleware.isAdmin, authMiddleware.isStoreManager]),
+        authMiddleware.isAdmin, authMiddleware.isStoreManager),
     require('./suppliers.routes.js')
 );
 
 // Categories CRUD routes
 app.use('/categories',
     authMiddleware.hasAccess(
-        [authMiddleware.isAdmin, authMiddleware.isStoreManager]),
+        authMiddleware.isAdmin, authMiddleware.isStoreManager),
     require('./categories.routes')
 );
 
 // Products CRUD routes
 app.use('/products',
     authMiddleware.hasAccess(
-        [authMiddleware.isAdmin, authMiddleware.isStoreManager]),
+        authMiddleware.isAdmin, authMiddleware.isStoreManager),
     require('./products.routes.js')
 );
 
 // Advertisement CRUD routes
 app.use('/ads',
     authMiddleware.hasAccess(
-        [authMiddleware.isAdmin, authMiddleware.isAdvertisingManager]),
+        authMiddleware.isAdmin, authMiddleware.isAdvertisingManager),
     require('./ads.routes.js')
 );
 
 // Monthly Expenses CRUD routes
 app.use('/me',
     authMiddleware.hasAccess(
-        [authMiddleware.isAdmin, authMiddleware.isStoreManager]),
+        authMiddleware.isAdmin, authMiddleware.isStoreManager),
     require('./monthlyExpenses.routes.js')
 );
 

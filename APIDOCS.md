@@ -18,7 +18,7 @@ here is the list of the ```/api``` routs along with ```/dashboard``` routes:
 | `{{host}}/auth/signUp`             | POST   | User registration.                                                                           |
 | `{{host}}/auth/signIn`             | POST   | User login and JWT generation.                                                               |
 | `{{host}}/auth/refreshToken`       | POST   | Refresh JWT token.                                                                           |
-| `{{host}}/auth/signout`             | POST   | User logout and session invalidation.                                                        |
+| `{{host}}/auth/signout`            | POST   | User logout and session invalidation.                                                        |
 | `{{host}}/users`                   | GET    | Retrieve all users (Admin only).                                                             |
 | `{{host}}/users/:id`               | GET    | Retrieve specific user by ID.                                                                |
 | `{{host}}/users/:id`               | PUT    | Update a user by ID.                                                                         |
