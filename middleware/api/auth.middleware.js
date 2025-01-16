@@ -1,5 +1,5 @@
 const { verify, JsonWebTokenError, TokenExpiredError } = require('jsonwebtoken');
-const { redisClient } = require('../../utils/redis');
+const { redisClient } = require('../../config/redis.conf');
 const { responseFailed } = require('../../utils/responseReturn'); // Import utility for standardized error responses
 
 // Middleware to authenticate JWT for protected routes
@@ -11,7 +11,7 @@ exports.authenticateJWT = async (req, res, next) => {
         if (!token) return responseFailed(res, 401, { error_message: 'Unauthorized, not enough params! >_<' }); // No token provided
 
         // Check if token is blacklisted (i.e., the user has logged out)
-        if (isBlackListed(token)) return responseFailed(res, 401, { error_message: 'Unauthorized, you have logged out please reauthenticate! >_<' });
+        if (await isBlackListed(token)) return responseFailed(res, 401, { error_message: 'Unauthorized, you have logged out please reauthenticate! >_<' });
 
         // Verify the token
         const { id, exp, role } = verify(token, process.env.PDK);
@@ -43,7 +43,7 @@ exports.authenticateRefreshToken = async (req, res, next) => {
         if (!refreshToken) return responseFailed(res, 401, { error_message: 'Unauthorized, not enough params! >_<', }); // No refresh token provided
 
         // Check if the refresh token is blacklisted (i.e., invalidated)
-        if (isBlackListed(refreshToken)) return responseFailed(res, 401, { error_message: 'Unauthorized, your refresh token is invalid, please reauthenticate! >_<', });
+        if (await isBlackListed(refreshToken)) return responseFailed(res, 401, { error_message: 'Unauthorized, your refresh token is invalid, please reauthenticate! >_<', });
 
         // Verify the refresh token
         const { id, exp } = verify(refreshToken, process.env.REFRESH_PDK);
@@ -56,15 +56,15 @@ exports.authenticateRefreshToken = async (req, res, next) => {
         if (!token) return responseFailed(res, 401, { error_message: 'Unauthorized, not enough params! >_<' }); // No token provided
 
         // Check if the main token is blacklisted
-        if (isBlackListed(token)) return responseFailed(res, 401, { error_message: 'Unauthorized, you have logged out please reauthenticate! >_<' });
-
+        if (await isBlackListed(token)) return responseFailed(res, 401, { error_message: 'Unauthorized, you have logged out please reauthenticate! >_<' });
+   
         // Verify and blacklist the token if necessary
         verify(token, process.env.PDK, async (err, payload) => {
             if (err instanceof TokenExpiredError) console.log('Token Expired! >_<');
             else if (err instanceof JsonWebTokenError) return responseFailed(res, 401, { error_message: 'Unauthorized, not enough params! >_<' });
 
             // Blacklist the token if valid
-            !err ?? await redisClient.set(token, "blacklisted", 'EX', parseInt((payload.exp * 1000 - Date.now()) / 1000, 10));
+            !err ?? await redisClient.set(`JWT_${token}`, "blacklisted", 'EX', parseInt((payload.exp * 1000 - Date.now()) / 1000, 10));
         });
 
         // Attach refresh token data to the request
@@ -87,7 +87,8 @@ exports.authenticateRefreshToken = async (req, res, next) => {
 };
 
 // helper function isBlackListed
-const isBlackListed = async (token) => await redisClient.exists(token);
+const isBlackListed = async (token) => await redisClient.exists(`JWT_${token}`);
+
 
 // Role-specific functions to check if the provided role matches the expected role
 exports.isAdmin = (role) => role === 'Admin';

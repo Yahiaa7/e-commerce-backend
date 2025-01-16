@@ -2,7 +2,7 @@ const moment = require('moment');
 const { compare, hash, genSalt } = require('bcrypt');
 const { User, Sequelize } = require('../../models');
 const { sign } = require('jsonwebtoken');
-const { redisClient } = require('../../utils/redis');
+const { redisClient } = require('../../config/redis.conf');
 const { responseSuccess, responseFailed } = require('../../utils/responseReturn');
 
 
@@ -70,7 +70,8 @@ exports.refreshToken = async (req, res) => {
         const payload = role ? { id, role } : { id };
         let newToken = sign(payload, process.env.PEK, { algorithm: 'RS512', expiresIn: 10 });
         const tokenRemainingTime = parseInt((exp * 1000 - Date.now()) / 1000, 10);
-        await redisClient.set(refreshToken, "blacklisted", 'EX', tokenRemainingTime);
+        console.log(`JWT_${refreshToken}`);
+        await redisClient.set(`JWT_${refreshToken}`, "blacklisted", 'EX', tokenRemainingTime);
         return responseSuccess(res, 201, { newToken, newRefreshToken }, 'Token refreshed successfully! :)');
     } catch (err) {
         return responseFailed(res, 500, {
@@ -84,7 +85,7 @@ exports.signout = async (req, res) => {
     try {
         const { token, exp } = req.tokenInfo;
         const tokenRemainingTime = parseInt((exp * 1000 - Date.now()) / 1000, 10);
-        await redisClient.set(token, "blacklisted", 'EX', tokenRemainingTime);
+        await redisClient.set(`JWT_${token}`, "blacklisted", 'EX', tokenRemainingTime);
         return responseSuccess(res, 200, {}, 'Signed out successfully :)');
     } catch (err) {
         return responseFailed(res, 500, {

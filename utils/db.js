@@ -1,6 +1,6 @@
 // Importing required Sequelize models
 const { Sequelize, sequelize } = require('../models');
-
+const { eventEmitter } = require('../utils/eventEmitter'); // EventEmitter for handling application-wide events
 // Function to handle database connection and synchronization
 exports.dbConnection = async () => {
     try {
@@ -18,6 +18,26 @@ exports.dbConnection = async () => {
         else console.log('Unknown error during authentication and syncing with Sequelize:', err);
 
         // Gracefully shut down if database connection fails
-        process.emit('SIGINT'); // Trigger the SIGINT signal to shut down the server
+        emitter.emit('serverShutdown', {
+            source: 'DatabaseConnection',
+            message: 'Error during database initialization',
+            details: err.message,
+        });
     }
+
+
+    // Graceful shutdown handler for database resources
+    eventEmitter.on('dbShutdown', async ({ resolve, reject }) => {
+        console.log('Initiating database shutdown...');
+        // Shutdown database connection
+        try {
+            console.log('Closing database connection...');
+            await sequelize.close();
+            console.log('Database connection closed.');
+            resolve();
+        } catch (error) {
+            console.error('Error while closing database connection:', error.message);
+            reject(error);
+        }
+    });
 };
