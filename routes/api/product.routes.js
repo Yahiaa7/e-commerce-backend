@@ -6,9 +6,17 @@ const { getProductsSchema } = require('../../utils/schemas');
 
 app.get('/', getProductsSchema, productsController.getProducts);
 
-app.post('/rate', authenticateJWT, productsController.rateProduct);
+app.get('/popular', productsController.getMostPopularProducts);
 
-app.post('/buy', authenticateJWT, productsController.buyProduct);
+app.get('/:id', productsController.productDetails);
+
+app.use(authenticateJWT);
+
+app.post('/rate', productsController.rateProduct);
+
+app.post('/buy', productsController.buyProduct);
+
+app.post('/buy', productsController.buyProduct);
 
 
 
