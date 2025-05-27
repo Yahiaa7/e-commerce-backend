@@ -9,7 +9,13 @@ const { getProductsSchema } = require('../../utils/schemas');
 app.get('/', getProductsSchema, productsController.getProducts);
 
 // rate a product which requires user authentication
-app.post('/rate', authenticateJWT, productsController.rateProduct);
+app.get('/popular', productsController.getMostPopularProducts);
+
+app.get('/:id', productsController.productDetails);
+
+app.use(authenticateJWT);
+
+app.post('/rate', productsController.rateProduct);
 
 // buying a product
 app.post('/buy', authenticateJWT, productsController.buyProduct);
